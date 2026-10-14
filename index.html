@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Küçükkuyu Taraftar Kartı</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family:Arial, sans-serif;
+      background:#f3f6fb;
+      color:#062a4d;
+      display:flex;
+      justify-content:center;
+      min-height:100vh;
+    }
+
+    .container{
+      width:100%;
+      max-width:520px;
+      padding:40px 20px;
+      box-sizing:border-box;
+      text-align:center;
+    }
+
+    h1{
+      font-size:24px;
+      margin-bottom:28px;
+    }
+
+    .card{
+      background:white;
+      border-radius:24px;
+      padding:30px 24px;
+      box-shadow:0 8px 30px rgba(0,0,0,0.08);
+    }
+
+    .status{
+      display:inline-block;
+      padding:10px 18px;
+      border-radius:30px;
+      font-weight:bold;
+      margin-bottom:20px;
+    }
+
+    .aktif{
+      background:#dff5e6;
+      color:#137333;
+    }
+
+    .pasif{
+      background:#fde2e2;
+      color:#b3261e;
+    }
+
+    .name{
+      font-size:28px;
+      font-weight:bold;
+      margin:10px 0 22px;
+    }
+
+    .row{
+      text-align:left;
+      margin:14px 0;
+      font-size:17px;
+      border-bottom:1px solid #eee;
+      padding-bottom:10px;
+    }
+
+    .label{
+      color:#777;
+      font-size:13px;
+      display:block;
+      margin-bottom:4px;
+    }
+
+    .footer{
+      margin-top:24px;
+      font-size:13px;
+      color:#8b98a8;
+    }
+
+    .error{
+      font-size:20px;
+      color:#333;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>KÜÇÜKKUYU TARAFTAR KARTI</h1>
+
+  <div class="card" id="kart">
+    Kart bilgileri yükleniyor...
+  </div>
+
+  <div class="footer">
+    Küçükkuyu Taraftar Derneği
+  </div>
+
+</div>
+
+<script>
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbxVtkLyFSNTwJmyg9qyiA7ouvU4xoAJlNTozajUYCUML-vIt1I1aI9vrEwg-VdMOzJb/exec";
+
+const params = new URLSearchParams(window.location.search);
+const kod = params.get("k");
+
+if (!kod) {
+  document.getElementById("kart").innerHTML =
+    '<div class="error">Kart kodu bulunamadı.</div>';
+} else {
+
+  fetch(API_URL + "?k=" + encodeURIComponent(kod) + "&json=1")
+    .then(res => res.json())
+    .then(member => {
+
+      if (!member.found) {
+        document.getElementById("kart").innerHTML =
+          '<div class="error">Kart doğrulanamadı.<br><br>' +
+          member.reason +
+          '</div>';
+        return;
+      }
+
+      const durumClass = member.aktif ? "aktif" : "pasif";
+
+      document.getElementById("kart").innerHTML = `
+
+        <div class="status ${durumClass}">
+          ${member.durum}
+        </div>
+
+        <div class="name">
+          ${member.adSoyad}
+        </div>
+
+        <div class="row">
+          <span class="label">Üye No</span>
+          ${member.uyeNo}
+        </div>
+
+        <div class="row">
+          <span class="label">Üyelik Tipi</span>
+          ${member.tip}
+        </div>
+
+        <div class="row">
+          <span class="label">Aylık Aidat</span>
+          ${member.aylikAidat} TL
+        </div>
+
+        <div class="row">
+          <span class="label">Son Ödeme</span>
+          ${member.sonOdeme}
+        </div>
+
+      `;
+
+    })
+    .catch(() => {
+      document.getElementById("kart").innerHTML =
+        '<div class="error">Kart bilgileri alınamadı.</div>';
+    });
+
+}
+
+</script>
+
+</body>
+</html>
