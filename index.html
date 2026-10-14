@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Küçükkuyu Fenerbahçe Gönüllüleri Taraftar Kartı</title>
 
   <style>
@@ -111,121 +110,106 @@
 </div>
 
 <script>
-const CSV_URL =
-"https://docs.google.com/spreadsheets/d/e/2PACX-1vTvTw7C2bbHjjSKIBzjeg3BqARBECrj7fVW8a6kMZxB7-oYLYNdrLmrLNUstVRHbt8hrduS1p3wlMro/pub?gid=313299759&single=true&output=csv";
-
 const params = new URLSearchParams(window.location.search);
 const kod = params.get("k");
 
-function csvSatiriniAyir(line) {
-  const result = [];
-  let current = "";
-  let insideQuotes = false;
+window.google = {
+  visualization: {
+    Query: {
+      setResponse: function(response) {
 
-  for (let i = 0; i < line.length; i++) {
-    const c = line[i];
+        try {
+          const rows = response.table.rows;
 
-    if (c === '"') {
-      if (insideQuotes && line[i + 1] === '"') {
-        current += '"';
-        i++;
-      } else {
-        insideQuotes = !insideQuotes;
+          let member = null;
+
+          for (let i = 0; i < rows.length; i++) {
+            const c = rows[i].c;
+
+            const kartKodu = c[0] && c[0].v ? String(c[0].v).trim() : "";
+
+            if (kartKodu === kod) {
+              member = {
+                kartKodu: kartKodu,
+                uyeNo: c[1] ? c[1].v : "",
+                adSoyad: c[2] ? c[2].v : "",
+                tip: c[3] ? c[3].v : "",
+                aylikAidat: c[4] ? c[4].v : "",
+                sonOdeme: c[5] ? c[5].v : "",
+                durum: c[6] ? c[6].v : ""
+              };
+              break;
+            }
+          }
+
+          if (!member) {
+            document.getElementById("kart").innerHTML =
+              '<div class="error">Kart doğrulanamadı.<br><br>Geçersiz kart.</div>';
+            return;
+          }
+
+          const aktif =
+            String(member.durum).trim().toLowerCase() === "aktif";
+
+          const durumClass = aktif ? "aktif" : "pasif";
+
+          document.getElementById("kart").innerHTML = `
+
+            <div class="status ${durumClass}">
+              ${member.durum}
+            </div>
+
+            <div class="name">
+              ${member.adSoyad}
+            </div>
+
+            <div class="row">
+              <span class="label">Üye No</span>
+              ${member.uyeNo}
+            </div>
+
+            <div class="row">
+              <span class="label">Üyelik Tipi</span>
+              ${member.tip}
+            </div>
+
+            <div class="row">
+              <span class="label">Aylık Aidat</span>
+              ${member.aylikAidat} TL
+            </div>
+
+            <div class="row">
+              <span class="label">Son Ödeme</span>
+              ${member.sonOdeme}
+            </div>
+          `;
+
+        } catch (e) {
+          document.getElementById("kart").innerHTML =
+            '<div class="error">Kart bilgileri işlenemedi.</div>';
+        }
       }
-    } else if (c === ',' && !insideQuotes) {
-      result.push(current);
-      current = "";
-    } else {
-      current += c;
     }
   }
-
-  result.push(current);
-  return result;
-}
+};
 
 if (!kod) {
   document.getElementById("kart").innerHTML =
     '<div class="error">Kart kodu bulunamadı.</div>';
 } else {
 
-  fetch(CSV_URL)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error("Veri alınamadı");
-      }
-      return response.text();
-    })
-    .then(text => {
+  const script = document.createElement("script");
 
-      const lines = text.trim().split(/\r?\n/);
+  script.src =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vTvTw7C2bbHjjSKIBzjeg3BqARBECrj7fVW8a6kMZxB7-oYLYNdrLmrLNUstVRHbt8hrduS1p3wlMro/gviz/tq" +
+    "?gid=313299759&tqx=out:json";
 
-      let member = null;
+  script.onerror = function() {
+    document.getElementById("kart").innerHTML =
+      '<div class="error">Kart bilgileri alınamadı.</div>';
+  };
 
-      for (let i = 1; i < lines.length; i++) {
-
-        const row = csvSatiriniAyir(lines[i]);
-
-        if ((row[0] || "").trim() === kod.trim()) {
-          member = {
-            kartKodu: row[0],
-            uyeNo: row[1],
-            adSoyad: row[2],
-            tip: row[3],
-            aylikAidat: row[4],
-            sonOdeme: row[5],
-            durum: row[6]
-          };
-          break;
-        }
-      }
-
-      if (!member) {
-        document.getElementById("kart").innerHTML =
-          '<div class="error">Kart doğrulanamadı.<br><br>Geçersiz kart.</div>';
-        return;
-      }
-
-      const aktif =
-        String(member.durum).trim().toLowerCase() === "aktif";
-
-      const durumClass = aktif ? "aktif" : "pasif";
-
-      document.getElementById("kart").innerHTML = `
-
-        <div class="status ${durumClass}">
-          ${member.durum}
-        </div>
-
-        <div class="name">
-          ${member.adSoyad}
-        </div>
-
-        <div class="row">
-          <span class="label">Üye No</span>
-          ${member.uyeNo}
-        </div>
-
-        <div class="row">
-          <span class="label">Üyelik Tipi</span>
-          ${member.tip}
-        </div>
-
-        <div class="row">
-          <span class="label">Aylık Aidat</span>
-          ${member.aylikAidat} TL
-        </div>
-
-        <div class="row">
-          <span class="label">Son Ödeme</span>
-          ${member.sonOdeme}
-        </div>
-      `;
-    })
-    .catch(error => {
-      document.getElementById("kart").innerHTML =
-        '<div class="error">Kart bilgileri alınamadı.</div>';
-    });
+  document.body.appendChild(script);
 }
 </script>
 
