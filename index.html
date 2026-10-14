@@ -9,7 +9,7 @@
   <style>
     body{
       margin:0;
-      font-family:Arial, sans-serif;
+      font-family:Arial,sans-serif;
       background:#f3f6fb;
       color:#062a4d;
       min-height:100vh;
@@ -27,13 +27,12 @@
 
     h1{
       font-size:22px;
-      line-height:1.25;
+      line-height:1.3;
       margin:0 0 26px;
-      color:#062a4d;
     }
 
     .card{
-      background:#ffffff;
+      background:#fff;
       border-radius:24px;
       padding:28px 22px;
       box-shadow:0 8px 30px rgba(0,0,0,.08);
@@ -67,12 +66,12 @@
       text-align:left;
       margin:14px 0;
       font-size:17px;
-      border-bottom:1px solid #eeeeee;
+      border-bottom:1px solid #eee;
       padding-bottom:10px;
     }
 
     .label{
-      color:#777777;
+      color:#777;
       font-size:13px;
       display:block;
       margin-bottom:4px;
@@ -86,13 +85,8 @@
 
     .error{
       font-size:19px;
-      color:#333333;
+      color:#333;
       line-height:1.5;
-    }
-
-    .loading{
-      font-size:18px;
-      color:#555555;
     }
   </style>
 </head>
@@ -107,7 +101,7 @@
   </h1>
 
   <div class="card" id="kart">
-    <div class="loading">Kart bilgileri yükleniyor...</div>
+    Kart bilgileri yükleniyor...
   </div>
 
   <div class="footer">
@@ -117,74 +111,122 @@
 </div>
 
 <script>
-  const API_URL =
-    "https://script.google.com/macros/s/AKfycbxVtkLyFSNTwJmyg9qyiA7ouvU4xoAJlNTozajUYCUML-vIt1I1aI9vrEwg-VdMOzJb/exec";
+const CSV_URL =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vTvTw7C2bbHjjSKIBzjeg3BqARBECrj7fVW8a6kMZxB7-oYLYNdrLmrLNUstVRHbt8hrduS1p3wlMro/pub?gid=313299759&single=true&output=csv";
 
-  const params = new URLSearchParams(window.location.search);
-  const kod = params.get("k");
+const params = new URLSearchParams(window.location.search);
+const kod = params.get("k");
 
-  window.kartVerisi = function(member) {
-    const kart = document.getElementById("kart");
+function csvSatiriniAyir(line) {
+  const result = [];
+  let current = "";
+  let insideQuotes = false;
 
-    if (!member || !member.found) {
-      kart.innerHTML =
-        '<div class="error">Kart doğrulanamadı.<br><br>' +
-        (member && member.reason ? member.reason : 'Geçersiz kart.') +
-        '</div>';
-      return;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+
+    if (c === '"') {
+      if (insideQuotes && line[i + 1] === '"') {
+        current += '"';
+        i++;
+      } else {
+        insideQuotes = !insideQuotes;
+      }
+    } else if (c === ',' && !insideQuotes) {
+      result.push(current);
+      current = "";
+    } else {
+      current += c;
     }
+  }
 
-    const durumClass = member.aktif ? "aktif" : "pasif";
+  result.push(current);
+  return result;
+}
 
-    kart.innerHTML = `
-      <div class="status ${durumClass}">
-        ${member.durum}
-      </div>
+if (!kod) {
+  document.getElementById("kart").innerHTML =
+    '<div class="error">Kart kodu bulunamadı.</div>';
+} else {
 
-      <div class="name">
-        ${member.adSoyad}
-      </div>
+  fetch(CSV_URL)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Veri alınamadı");
+      }
+      return response.text();
+    })
+    .then(text => {
 
-      <div class="row">
-        <span class="label">Üye No</span>
-        ${member.uyeNo}
-      </div>
+      const lines = text.trim().split(/\r?\n/);
 
-      <div class="row">
-        <span class="label">Üyelik Tipi</span>
-        ${member.tip}
-      </div>
+      let member = null;
 
-      <div class="row">
-        <span class="label">Aylık Aidat</span>
-        ${member.aylikAidat} TL
-      </div>
+      for (let i = 1; i < lines.length; i++) {
 
-      <div class="row">
-        <span class="label">Son Ödeme</span>
-        ${member.sonOdeme}
-      </div>
-    `;
-  };
+        const row = csvSatiriniAyir(lines[i]);
 
-  if (!kod) {
-    document.getElementById("kart").innerHTML =
-      '<div class="error">Kart kodu bulunamadı.</div>';
-  } else {
-    const script = document.createElement("script");
+        if ((row[0] || "").trim() === kod.trim()) {
+          member = {
+            kartKodu: row[0],
+            uyeNo: row[1],
+            adSoyad: row[2],
+            tip: row[3],
+            aylikAidat: row[4],
+            sonOdeme: row[5],
+            durum: row[6]
+          };
+          break;
+        }
+      }
 
-    script.src =
-      API_URL +
-      "?k=" + encodeURIComponent(kod) +
-      "&json=1&callback=kartVerisi";
+      if (!member) {
+        document.getElementById("kart").innerHTML =
+          '<div class="error">Kart doğrulanamadı.<br><br>Geçersiz kart.</div>';
+        return;
+      }
 
-    script.onerror = function() {
+      const aktif =
+        String(member.durum).trim().toLowerCase() === "aktif";
+
+      const durumClass = aktif ? "aktif" : "pasif";
+
+      document.getElementById("kart").innerHTML = `
+
+        <div class="status ${durumClass}">
+          ${member.durum}
+        </div>
+
+        <div class="name">
+          ${member.adSoyad}
+        </div>
+
+        <div class="row">
+          <span class="label">Üye No</span>
+          ${member.uyeNo}
+        </div>
+
+        <div class="row">
+          <span class="label">Üyelik Tipi</span>
+          ${member.tip}
+        </div>
+
+        <div class="row">
+          <span class="label">Aylık Aidat</span>
+          ${member.aylikAidat} TL
+        </div>
+
+        <div class="row">
+          <span class="label">Son Ödeme</span>
+          ${member.sonOdeme}
+        </div>
+      `;
+    })
+    .catch(error => {
       document.getElementById("kart").innerHTML =
         '<div class="error">Kart bilgileri alınamadı.</div>';
-    };
-
-    document.body.appendChild(script);
-  }
+    });
+}
 </script>
 
 </body>
