@@ -4,214 +4,67 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Küçükkuyu Fenerbahçe Gönüllüleri Taraftar Kartı</title>
-
   <style>
-    body{
-      margin:0;
-      font-family:Arial,sans-serif;
-      background:#f3f6fb;
-      color:#062a4d;
-      min-height:100vh;
-      display:flex;
-      justify-content:center;
-    }
-
-    .container{
-      width:100%;
-      max-width:520px;
-      padding:36px 18px;
-      box-sizing:border-box;
-      text-align:center;
-    }
-
-    h1{
-      font-size:22px;
-      line-height:1.3;
-      margin:0 0 26px;
-    }
-
-    .card{
-      background:#fff;
-      border-radius:24px;
-      padding:28px 22px;
-      box-shadow:0 8px 30px rgba(0,0,0,.08);
-    }
-
-    .status{
-      display:inline-block;
-      padding:10px 18px;
-      border-radius:30px;
-      font-weight:bold;
-      margin-bottom:18px;
-    }
-
-    .aktif{
-      background:#dff5e6;
-      color:#137333;
-    }
-
-    .pasif{
-      background:#fde2e2;
-      color:#b3261e;
-    }
-
-    .name{
-      font-size:28px;
-      font-weight:bold;
-      margin:8px 0 22px;
-    }
-
-    .row{
-      text-align:left;
-      margin:14px 0;
-      font-size:17px;
-      border-bottom:1px solid #eee;
-      padding-bottom:10px;
-    }
-
-    .label{
-      color:#777;
-      font-size:13px;
-      display:block;
-      margin-bottom:4px;
-    }
-
-    .footer{
-      margin-top:22px;
-      font-size:13px;
-      color:#8b98a8;
-    }
-
-    .error{
-      font-size:19px;
-      color:#333;
-      line-height:1.5;
-    }
+    body{margin:0;font-family:Arial,sans-serif;background:#f3f6fb;color:#062a4d;min-height:100vh;display:flex;justify-content:center}
+    .container{width:100%;max-width:520px;padding:36px 18px;box-sizing:border-box;text-align:center}
+    h1{font-size:22px;line-height:1.3;margin:0 0 26px}
+    .card{background:#fff;border-radius:24px;padding:28px 22px;box-shadow:0 8px 30px rgba(0,0,0,.08)}
+    .status{display:inline-block;padding:10px 18px;border-radius:30px;font-weight:bold;margin-bottom:18px}
+    .aktif{background:#dff5e6;color:#137333}
+    .pasif{background:#fde2e2;color:#b3261e}
+    .name{font-size:28px;font-weight:bold;margin:8px 0 22px}
+    .row{text-align:left;margin:14px 0;font-size:17px;border-bottom:1px solid #eee;padding-bottom:10px}
+    .label{color:#777;font-size:13px;display:block;margin-bottom:4px}
+    .footer{margin-top:22px;font-size:13px;color:#8b98a8}
+    .error{font-size:19px;color:#333;line-height:1.5}
   </style>
 </head>
-
 <body>
-
 <div class="container">
-
-  <h1>
-    KÜÇÜKKUYU FENERBAHÇE GÖNÜLLÜLERİ<br>
-    TARAFTAR KARTI
-  </h1>
-
-  <div class="card" id="kart">
-    Kart bilgileri yükleniyor...
-  </div>
-
-  <div class="footer">
-    Küçükkuyu Fenerbahçe Gönüllüleri
-  </div>
-
+  <h1>KÜÇÜKKUYU FENERBAHÇE GÖNÜLLÜLERİ<br>TARAFTAR KARTI</h1>
+  <div class="card" id="kart">Kart bilgileri yükleniyor...</div>
+  <div class="footer">Küçükkuyu Fenerbahçe Gönüllüleri</div>
 </div>
 
 <script>
-const params = new URLSearchParams(window.location.search);
-const kod = params.get("k");
+const API_URL = "https://script.google.com/macros/s/AKfycbxVtkLyFSNTwJmyg9qyiA7ouvU4xoAJlNTozajUYCUML-vIt1I1aI9vrEwg-VdMOzJb/exec";
+const kod = new URLSearchParams(window.location.search).get("k");
 
-window.google = {
-  visualization: {
-    Query: {
-      setResponse: function(response) {
+window.kartVerisi = function(member) {
+  const kart = document.getElementById("kart");
 
-        try {
-          const rows = response.table.rows;
-
-          let member = null;
-
-          for (let i = 0; i < rows.length; i++) {
-            const c = rows[i].c;
-
-            const kartKodu = c[0] && c[0].v ? String(c[0].v).trim() : "";
-
-            if (kartKodu === kod) {
-              member = {
-                kartKodu: kartKodu,
-                uyeNo: c[1] ? c[1].v : "",
-                adSoyad: c[2] ? c[2].v : "",
-                tip: c[3] ? c[3].v : "",
-                aylikAidat: c[4] ? c[4].v : "",
-                sonOdeme: c[5] ? c[5].v : "",
-                durum: c[6] ? c[6].v : ""
-              };
-              break;
-            }
-          }
-
-          if (!member) {
-            document.getElementById("kart").innerHTML =
-              '<div class="error">Kart doğrulanamadı.<br><br>Geçersiz kart.</div>';
-            return;
-          }
-
-          const aktif =
-            String(member.durum).trim().toLowerCase() === "aktif";
-
-          const durumClass = aktif ? "aktif" : "pasif";
-
-          document.getElementById("kart").innerHTML = `
-
-            <div class="status ${durumClass}">
-              ${member.durum}
-            </div>
-
-            <div class="name">
-              ${member.adSoyad}
-            </div>
-
-            <div class="row">
-              <span class="label">Üye No</span>
-              ${member.uyeNo}
-            </div>
-
-            <div class="row">
-              <span class="label">Üyelik Tipi</span>
-              ${member.tip}
-            </div>
-
-            <div class="row">
-              <span class="label">Aylık Aidat</span>
-              ${member.aylikAidat} TL
-            </div>
-
-            <div class="row">
-              <span class="label">Son Ödeme</span>
-              ${member.sonOdeme}
-            </div>
-          `;
-
-        } catch (e) {
-          document.getElementById("kart").innerHTML =
-            '<div class="error">Kart bilgileri işlenemedi.</div>';
-        }
-      }
-    }
+  if (!member || !member.found) {
+    kart.innerHTML = '<div class="error">Kart doğrulanamadı.<br><br>' +
+      (member && member.reason ? member.reason : 'Geçersiz kart.') +
+      '</div>';
+    return;
   }
+
+  const aktif = String(member.durum || "").trim().toLowerCase() === "aktif";
+  const durumClass = aktif ? "aktif" : "pasif";
+
+  kart.innerHTML = `
+    <div class="status ${durumClass}">${member.durum}</div>
+    <div class="name">${member.adSoyad}</div>
+    <div class="row"><span class="label">Üye No</span>${member.uyeNo}</div>
+    <div class="row"><span class="label">Üyelik Tipi</span>${member.tip}</div>
+    <div class="row"><span class="label">Aylık Aidat</span>${member.aylikAidat} TL</div>
+    <div class="row"><span class="label">Son Ödeme</span>${member.sonOdeme}</div>
+  `;
 };
 
 if (!kod) {
-  document.getElementById("kart").innerHTML =
-    '<div class="error">Kart kodu bulunamadı.</div>';
+  document.getElementById("kart").innerHTML = '<div class="error">Kart kodu bulunamadı.</div>';
 } else {
-
-  const script = document.createElement("script");
-
-  script.src =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vTvTw7C2bbHjjSKIBzjeg3BqARBECrj7fVW8a6kMZxB7-oYLYNdrLmrLNUstVRHbt8hrduS1p3wlMro/gviz/tq" +
-    "?gid=313299759&tqx=out:json";
-
-  script.onerror = function() {
+  const s = document.createElement("script");
+  s.src = API_URL + "?k=" + encodeURIComponent(kod) + "&json=1&callback=kartVerisi&_=" + Date.now();
+  s.async = true;
+  s.onerror = function() {
     document.getElementById("kart").innerHTML =
       '<div class="error">Kart bilgileri alınamadı.</div>';
   };
-
-  document.body.appendChild(script);
+  document.body.appendChild(s);
 }
 </script>
-
 </body>
 </html>
