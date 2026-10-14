@@ -8,12 +8,12 @@
   <style>
     body{
       margin:0;
-      font-family:Arial, sans-serif;
+      font-family:Arial,sans-serif;
       background:#f3f6fb;
       color:#062a4d;
+      min-height:100vh;
       display:flex;
       justify-content:center;
-      min-height:100vh;
     }
 
     .container{
@@ -30,10 +30,10 @@
     }
 
     .card{
-      background:white;
+      background:#fff;
       border-radius:24px;
       padding:30px 24px;
-      box-shadow:0 8px 30px rgba(0,0,0,0.08);
+      box-shadow:0 8px 30px rgba(0,0,0,.08);
     }
 
     .status{
@@ -105,72 +105,73 @@
 </div>
 
 <script>
-
 const API_URL =
 "https://script.google.com/macros/s/AKfycbxVtkLyFSNTwJmyg9qyiA7ouvU4xoAJlNTozajUYCUML-vIt1I1aI9vrEwg-VdMOzJb/exec";
 
 const params = new URLSearchParams(window.location.search);
 const kod = params.get("k");
 
+function kartVerisi(member) {
+
+  if (!member || !member.found) {
+    document.getElementById("kart").innerHTML =
+      '<div class="error">Kart doğrulanamadı.<br><br>' +
+      (member && member.reason ? member.reason : 'Geçersiz kart.') +
+      '</div>';
+    return;
+  }
+
+  const durumClass = member.aktif ? "aktif" : "pasif";
+
+  document.getElementById("kart").innerHTML = `
+    <div class="status ${durumClass}">
+      ${member.durum}
+    </div>
+
+    <div class="name">
+      ${member.adSoyad}
+    </div>
+
+    <div class="row">
+      <span class="label">Üye No</span>
+      ${member.uyeNo}
+    </div>
+
+    <div class="row">
+      <span class="label">Üyelik Tipi</span>
+      ${member.tip}
+    </div>
+
+    <div class="row">
+      <span class="label">Aylık Aidat</span>
+      ${member.aylikAidat} TL
+    </div>
+
+    <div class="row">
+      <span class="label">Son Ödeme</span>
+      ${member.sonOdeme}
+    </div>
+  `;
+}
+
 if (!kod) {
   document.getElementById("kart").innerHTML =
     '<div class="error">Kart kodu bulunamadı.</div>';
 } else {
+  const script = document.createElement("script");
 
-  fetch(API_URL + "?k=" + encodeURIComponent(kod) + "&json=1")
-    .then(res => res.json())
-    .then(member => {
+  script.src =
+    API_URL +
+    "?k=" + encodeURIComponent(kod) +
+    "&json=1&callback=kartVerisi";
 
-      if (!member.found) {
-        document.getElementById("kart").innerHTML =
-          '<div class="error">Kart doğrulanamadı.<br><br>' +
-          member.reason +
-          '</div>';
-        return;
-      }
+  script.onerror = function() {
+    document.getElementById("kart").innerHTML =
+      '<div class="error">Kart bilgileri alınamadı.</div>';
+  };
 
-      const durumClass = member.aktif ? "aktif" : "pasif";
-
-      document.getElementById("kart").innerHTML = `
-
-        <div class="status ${durumClass}">
-          ${member.durum}
-        </div>
-
-        <div class="name">
-          ${member.adSoyad}
-        </div>
-
-        <div class="row">
-          <span class="label">Üye No</span>
-          ${member.uyeNo}
-        </div>
-
-        <div class="row">
-          <span class="label">Üyelik Tipi</span>
-          ${member.tip}
-        </div>
-
-        <div class="row">
-          <span class="label">Aylık Aidat</span>
-          ${member.aylikAidat} TL
-        </div>
-
-        <div class="row">
-          <span class="label">Son Ödeme</span>
-          ${member.sonOdeme}
-        </div>
-
-      `;
-
-    })
-    .catch(() => {
-      document.getElementById("kart").innerHTML =
-        '<div class="error">Kart bilgileri alınamadı.</div>';
-    });
-
+  document.body.appendChild(script);
 }
-
 </script>
 
 </body>
