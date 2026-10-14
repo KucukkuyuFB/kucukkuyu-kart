@@ -27,43 +27,50 @@
 </div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbxVtkLyFSNTwJmyg9qyiA7ouvU4xoAJlNTozajUYCUML-vIt1I1aI9vrEwg-VdMOzJb/exec";
 const kod = new URLSearchParams(window.location.search).get("k");
 
-window.kartVerisi = function(member) {
-  const kart = document.getElementById("kart");
-
-  if (!member || !member.found) {
-    kart.innerHTML = '<div class="error">Kart doğrulanamadı.<br><br>' +
-      (member && member.reason ? member.reason : 'Geçersiz kart.') +
-      '</div>';
-    return;
-  }
-
-  const aktif = String(member.durum || "").trim().toLowerCase() === "aktif";
-  const durumClass = aktif ? "aktif" : "pasif";
-
-  kart.innerHTML = `
-    <div class="status ${durumClass}">${member.durum}</div>
-    <div class="name">${member.adSoyad}</div>
-    <div class="row"><span class="label">Üye No</span>${member.uyeNo}</div>
-    <div class="row"><span class="label">Üyelik Tipi</span>${member.tip}</div>
-    <div class="row"><span class="label">Aylık Aidat</span>${member.aylikAidat} TL</div>
-    <div class="row"><span class="label">Son Ödeme</span>${member.sonOdeme}</div>
-  `;
-};
+function guvenli(v){
+  return String(v ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
 
 if (!kod) {
-  document.getElementById("kart").innerHTML = '<div class="error">Kart kodu bulunamadı.</div>';
+  document.getElementById("kart").innerHTML =
+    '<div class="error">Kart kodu bulunamadı.</div>';
 } else {
-  const s = document.createElement("script");
-  s.src = API_URL + "?k=" + encodeURIComponent(kod) + "&json=1&callback=kartVerisi&_=" + Date.now();
-  s.async = true;
-  s.onerror = function() {
-    document.getElementById("kart").innerHTML =
-      '<div class="error">Kart bilgileri alınamadı.</div>';
-  };
-  document.body.appendChild(s);
+  fetch("./members.json?v=" + Date.now(), {cache:"no-store"})
+    .then(r => {
+      if (!r.ok) throw new Error("members.json bulunamadı");
+      return r.json();
+    })
+    .then(members => {
+      const member = members[kod];
+      if (!member) {
+        document.getElementById("kart").innerHTML =
+          '<div class="error">Kart doğrulanamadı.<br><br>Geçersiz kart.</div>';
+        return;
+      }
+
+      const aktif = String(member.durum || "").trim().toLowerCase() === "aktif";
+      const durumClass = aktif ? "aktif" : "pasif";
+
+      document.getElementById("kart").innerHTML = `
+        <div class="status ${durumClass}">${guvenli(member.durum)}</div>
+        <div class="name">${guvenli(member.adSoyad)}</div>
+        <div class="row"><span class="label">Üye No</span>${guvenli(member.uyeNo)}</div>
+        <div class="row"><span class="label">Üyelik Tipi</span>${guvenli(member.tip)}</div>
+        <div class="row"><span class="label">Aylık Aidat</span>${guvenli(member.aylikAidat)} TL</div>
+        <div class="row"><span class="label">Son Ödeme</span>${guvenli(member.sonOdeme)}</div>
+      `;
+    })
+    .catch(() => {
+      document.getElementById("kart").innerHTML =
+        '<div class="error">Kart bilgileri alınamadı.</div>';
+    });
 }
 </script>
 </body>
