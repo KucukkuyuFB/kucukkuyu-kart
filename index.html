@@ -56,6 +56,8 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#06
 .verifyText{font-size:18px;line-height:1.65;color:#0b1e3d;font-weight:800;background:#f7f9fc;border-radius:18px;padding:19px 17px;border:1px solid #e3e8f0}
 .verifyText strong{color:#071d49}
 .verifyNote{margin-top:16px;font-size:11px;color:#7b8494;font-weight:700;line-height:1.5}
+.partnerBtn{display:block;margin-top:18px;text-decoration:none;background:#ffd500;color:#071d49;font-weight:900;text-align:center;padding:14px 16px;border-radius:14px;border:1px solid #e2bd00;box-shadow:0 6px 16px rgba(7,29,73,.12)}
+.partnerBtn:active{transform:translateY(1px)}
 .code{margin-top:17px;font-size:11px;color:#8a93a2;word-break:break-all}
 .footer{text-align:center;margin-top:15px;color:#dbe5f6;font-size:12px}
 .loading,.error{padding:34px 20px;text-align:center;font-size:18px}
@@ -139,6 +141,7 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
      '<img class="qrImage" src="'+qrLinki+'" alt="Kart QR Kodu">'+
      '<div class="qrNote">Bu QR kod okutulduğunda bu dijital taraftar kartı açılır.</div>'+
    '</div>'+
+   '<a class="partnerBtn" href="./isyerleri.html">Üye İşyerlerini Gör</a>'+
    '<div class="code">Kart Kodu: '+esc(kod)+'</div>';
 })
 .catch(()=>hata("Kart bilgileri alınamadı."));
