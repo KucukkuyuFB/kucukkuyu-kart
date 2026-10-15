@@ -141,7 +141,7 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
      '<img class="qrImage" src="'+qrLinki+'" alt="Kart QR Kodu">'+
      '<div class="qrNote">Bu QR kod okutulduğunda bu dijital taraftar kartı açılır.</div>'+
    '</div>'+
-   '<a class="partnerBtn" href="./isyerleri.html">Üye İşyerlerini Gör</a>'+
+   '<a class="partnerBtn" href="./isyerleri.html?k='+encodeURIComponent(kod)+'">Üye İşyerlerini Gör</a>'+
    '<div class="code">Kart Kodu: '+esc(kod)+'</div>';
 })
 .catch(()=>hata("Kart bilgileri alınamadı."));

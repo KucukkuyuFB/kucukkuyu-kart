@@ -37,10 +37,16 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#07
         <strong>Üye işyeri listesi hazırlanıyor</strong>
         <span>İlk anlaşmalı işyerleri eklendiğinde isim, avantaj ve konum bilgileri burada yer alacak.</span>
       </div>
-      <a class="back" href="./">Kartıma Dön</a>
+      <a class="back" id="backLink" href="./">Kartıma Dön</a>
     </div>
   </div>
   <div class="footer">Küçükkuyu Fenerbahçe Gönüllüleri</div>
 </div>
+<script>
+const backKod=new URLSearchParams(window.location.search).get("k");
+if(backKod){
+  document.getElementById("backLink").href="./?k="+encodeURIComponent(backKod)+"&v=36";
+}
+</script>
 </body>
 </html>
