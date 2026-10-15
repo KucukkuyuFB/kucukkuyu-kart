@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Üye İşyeri Doğrulama</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#071d49 0,#0b2a5b 42%,#f3f5f8 42%);min-height:100vh;color:#071d49}
+.wrap{width:100%;max-width:520px;margin:0 auto;padding:26px 16px 36px}
+.head{text-align:center;color:#fff;padding:8px 10px 22px}
+.head h1{font-size:22px;line-height:1.2;margin:0 0 6px;font-weight:900}
+.head p{margin:0;color:#ffd500;font-size:13px;font-weight:800;letter-spacing:1.2px}
+.card{background:#fff;border-radius:26px;overflow:hidden;border:1px solid rgba(255,213,0,.55);box-shadow:0 18px 50px rgba(0,0,0,.22)}
+.band{height:9px;background:linear-gradient(90deg,#ffd500 0 50%,#071d49 50%)}
+.content{padding:34px 24px 30px;text-align:center}
+.icon{width:82px;height:82px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:42px;font-weight:900}
+.active{background:#dff4e5;color:#17823b}
+.passive{background:#fde3e1;color:#b42318}
+.badge{display:inline-block;padding:9px 16px;border-radius:999px;font-size:13px;font-weight:900;letter-spacing:.5px;margin-bottom:18px}
+.title{font-size:25px;font-weight:900;margin:0 0 18px;color:#071d49}
+.message{font-size:19px;font-weight:800;line-height:1.65;padding:20px 18px;background:#f7f9fc;border:1px solid #e2e8f0;border-radius:18px}
+.name{font-size:23px;font-weight:900;color:#071d49}
+.note{margin-top:18px;color:#7b8494;font-size:12px;font-weight:700;line-height:1.5}
+.loading,.error{padding:34px 24px;text-align:center;font-size:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>KÜÇÜKKUYU FENERBAHÇE GÖNÜLLÜLERİ</h1>
+    <p>ÜYE İŞYERİ DOĞRULAMA</p>
+  </div>
+  <div class="card">
+    <div class="band"></div>
+    <div id="sonuc" class="loading">Üyelik doğrulanıyor...</div>
+  </div>
+</div>
+<script>
+const kod=new URLSearchParams(window.location.search).get("k");
+const sonuc=document.getElementById("sonuc");
+function esc(v){return String(v||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
+function hata(m){sonuc.className="error";sonuc.innerHTML=m}
+if(!kod){
+  hata("Kart kodu bulunamadı.");
+}else{
+  fetch("./members.json?ts="+Date.now(),{cache:"no-store"})
+    .then(function(r){if(!r.ok) throw new Error("data"); return r.json();})
+    .then(function(members){
+      const m=members[kod];
+      if(!m){hata("Üyelik doğrulanamadı.");return;}
+      const aktif=String(m.durum||"").trim().toLowerCase()==="aktif";
+      sonuc.className="content";
+      sonuc.innerHTML=
+        '<div class="icon '+(aktif?'active':'passive')+'">'+(aktif?'✓':'!')+'</div>'+
+        '<div class="badge '+(aktif?'active':'passive')+'">'+(aktif?'AKTİF ÜYELİK':'PASİF ÜYELİK')+'</div>'+
+        '<div class="title">Üye İşyeri Doğrulama</div>'+
+        '<div class="message"><span class="name">'+esc(m.adSoyad)+'</span><br><br>'+
+        (aktif
+          ? 'isimli üyemizin üyeliği <strong>AKTİF</strong> olup, üye işyeri imkanlarından faydalanabilir.'
+          : 'isimli üyemizin üyeliği <strong>PASİF</strong> durumdadır, üye işyeri imkanlarından faydalanamaz.')+
+        '</div>'+
+        '<div class="note">Küçükkuyu Fenerbahçe Gönüllüleri<br>Dijital Doğrulama Sistemi</div>';
+    })
+    .catch(function(){hata("Üyelik bilgileri alınamadı.");});
+}
+</script>
+</body>
+</html>

@@ -119,17 +119,7 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
  if(!m){hata("Kart doğrulanamadı.<br><br>Geçersiz kart.");return}
  const aktif=String(m.durum||"").trim().toLowerCase()==="aktif";
  const kartLinki="https://kucukkuyufb.github.io/kucukkuyu-kart/?k="+encodeURIComponent(kod);
- const qrLinki="https://quickchart.io/qr?size=400&text="+encodeURIComponent(kartLinki);
- if(mode==="verify"){
-   document.getElementById("kart").className="verifyContent";
-   document.getElementById("kart").innerHTML=
-     '<div class="verifyIcon '+(aktif?'active':'passive')+'">'+(aktif?'✓':'!')+'</div>'+
-     '<div class="verifyBadge '+(aktif?'active':'passive')+'">'+(aktif?'AKTİF ÜYELİK':'PASİF ÜYELİK')+'</div>'+
-     '<div class="verifyTitle">Üye İşyeri Doğrulama</div>'+
-     '<div class="verifyText"><strong>'+esc(m.adSoyad)+'</strong> isimli üyemizin üyeliği <strong>'+(aktif?'AKTİF':'PASİF')+'</strong> '+(aktif?'olup, üye işyeri imkanlarından faydalanabilir.':'durumdadır, üye işyeri imkanlarından faydalanamaz.')+'</div>'+
-     '<div class="verifyNote">Küçükkuyu Fenerbahçe Gönüllüleri<br>Dijital Doğrulama Sistemi</div>';
-   return;
- }
+ const verifyLinki="https://kucukkuyufb.github.io/kucukkuyu-kart/verify.html?k="+encodeURIComponent(kod);\n const qrLinki="https://quickchart.io/qr?size=400&text="+encodeURIComponent(verifyLinki);
  document.getElementById("kart").className="content";
  document.getElementById("kart").innerHTML=
    '<div class="status '+(aktif?'aktif':'pasif')+'">'+(aktif?'AKTİF ÜYE':'PASİF ÜYE')+'</div>'+
