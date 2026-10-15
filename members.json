@@ -55,8 +55,8 @@
     "tip": "Normal Üye",
     "aylikAidat": "300",
     "sonOdeme": "01.10.2026",
-    "durum": "Aktif",
+    "durum": "Pasif",
     "uyelikBaslangic": "01.09.2026",
-    "aktif": true
+    "aktif": false
   }
 }
