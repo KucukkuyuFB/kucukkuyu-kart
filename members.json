@@ -6,6 +6,7 @@
     "aylikAidat": "500",
     "sonOdeme": "01.10.2026",
     "durum": "Aktif",
+    "uyelikBaslangic": "01.09.2026",
     "aktif": true
   },
   "KKT-10002-X7P2Q": {
@@ -15,6 +16,7 @@
     "aylikAidat": "500",
     "sonOdeme": "01.10.2026",
     "durum": "Aktif",
+    "uyelikBaslangic": "01.09.2026",
     "aktif": true
   },
   "KKT-10003-R9T3L": {
@@ -24,6 +26,7 @@
     "aylikAidat": "500",
     "sonOdeme": "01.10.2026",
     "durum": "Aktif",
+    "uyelikBaslangic": "01.09.2026",
     "aktif": true
   },
   "KKT-10004-V6C1Z": {
@@ -33,6 +36,7 @@
     "aylikAidat": "500",
     "sonOdeme": "01.10.2026",
     "durum": "Aktif",
+    "uyelikBaslangic": "01.09.2026",
     "aktif": true
   },
   "KKT-10005-H2K7S": {
@@ -42,6 +46,7 @@
     "aylikAidat": "500",
     "sonOdeme": "01.10.2026",
     "durum": "Aktif",
+    "uyelikBaslangic": "01.09.2026",
     "aktif": true
   },
   "KKT-10006-YEVML": {
@@ -51,6 +56,7 @@
     "aylikAidat": "500",
     "sonOdeme": "01.10.2026",
     "durum": "Aktif",
+    "uyelikBaslangic": "01.09.2026",
     "aktif": true
   }
 }
