@@ -1,0 +1,16 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'tr.kucukkuyufb.taraftarkarti'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "tr.kucukkuyufb.taraftarkarti"
+        minSdk 24
+        targetSdk 35
+        versionCode 1
+        versionName "1.0"
+    }
+}
