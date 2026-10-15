@@ -119,7 +119,8 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
  if(!m){hata("Kart doğrulanamadı.<br><br>Geçersiz kart.");return}
  const aktif=String(m.durum||"").trim().toLowerCase()==="aktif";
  const kartLinki="https://kucukkuyufb.github.io/kucukkuyu-kart/?k="+encodeURIComponent(kod);
- const verifyLinki="https://kucukkuyufb.github.io/kucukkuyu-kart/verify.html?k="+encodeURIComponent(kod);\n const qrLinki="https://quickchart.io/qr?size=400&text="+encodeURIComponent(verifyLinki);
+ const verifyLinki="https://kucukkuyufb.github.io/kucukkuyu-kart/verify.html?k="+encodeURIComponent(kod);
+ const qrLinki="https://quickchart.io/qr?size=400&text="+encodeURIComponent(verifyLinki);
  document.getElementById("kart").className="content";
  document.getElementById("kart").innerHTML=
    '<div class="status '+(aktif?'aktif':'pasif')+'">'+(aktif?'AKTİF ÜYE':'PASİF ÜYE')+'</div>'+
