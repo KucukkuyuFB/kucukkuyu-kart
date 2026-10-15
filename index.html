@@ -45,6 +45,17 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#06
 .qrImage{width:180px;height:180px;object-fit:contain;display:block;margin:0 auto 8px;background:#fff}
 .qrNote{font-size:11px;color:#8a93a2;line-height:1.4}
 .thanksBox{margin-top:18px;padding:15px 16px;border-radius:16px;background:#f4f7fb;border:1px solid #e1e7ef;color:var(--navy);font-size:14px;font-weight:800;line-height:1.5}
+.verifyContent{padding:30px 22px 28px;background:linear-gradient(180deg,#fff,#fbfaf4);text-align:center}
+.verifyIcon{width:74px;height:74px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:38px;font-weight:900}
+.verifyIcon.active{background:#dff4e5;color:#17823b}
+.verifyIcon.passive{background:#fde3e1;color:#b42318}
+.verifyBadge{display:inline-block;padding:9px 16px;border-radius:999px;font-size:13px;font-weight:900;letter-spacing:.5px;margin-bottom:16px}
+.verifyBadge.active{background:#dff4e5;color:#17823b}
+.verifyBadge.passive{background:#fde3e1;color:#b42318}
+.verifyTitle{font-size:24px;font-weight:900;color:#071d49;margin:2px 0 14px;line-height:1.25}
+.verifyText{font-size:18px;line-height:1.65;color:#0b1e3d;font-weight:800;background:#f7f9fc;border-radius:18px;padding:19px 17px;border:1px solid #e3e8f0}
+.verifyText strong{color:#071d49}
+.verifyNote{margin-top:16px;font-size:11px;color:#7b8494;font-weight:700;line-height:1.5}
 .code{margin-top:17px;font-size:11px;color:#8a93a2;word-break:break-all}
 .footer{text-align:center;margin-top:15px;color:#dbe5f6;font-size:12px}
 .loading,.error{padding:34px 20px;text-align:center;font-size:18px}
@@ -69,7 +80,7 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#06
 </div>
 
 <script>
-const kod=new URLSearchParams(location.search).get("k");
+const params=new URLSearchParams(location.search);\nconst kod=params.get("k");\nconst mode=params.get("mode");
 function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
 function hata(m){document.getElementById("kart").className="error";document.getElementById("kart").innerHTML=m}
 function tarihTR(v){
@@ -107,6 +118,16 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
  const aktif=String(m.durum||"").trim().toLowerCase()==="aktif";
  const kartLinki="https://kucukkuyufb.github.io/kucukkuyu-kart/?k="+encodeURIComponent(kod);
  const qrLinki="https://quickchart.io/qr?size=400&text="+encodeURIComponent(kartLinki);
+ if(mode==="verify"){
+   document.getElementById("kart").className="verifyContent";
+   document.getElementById("kart").innerHTML=
+     '<div class="verifyIcon '+(aktif?'active':'passive')+'">'+(aktif?'✓':'!')+'</div>'+
+     '<div class="verifyBadge '+(aktif?'active':'passive')+'">'+(aktif?'AKTİF ÜYELİK':'PASİF ÜYELİK')+'</div>'+
+     '<div class="verifyTitle">Üye İşyeri Doğrulama</div>'+
+     '<div class="verifyText"><strong>'+esc(m.adSoyad)+'</strong> isimli üyemizin üyeliği <strong>'+(aktif?'AKTİF':'PASİF')+'</strong> '+(aktif?'olup, üye işyeri imkanlarından faydalanabilir.':'durumdadır, üye işyeri imkanlarından faydalanamaz.')+'</div>'+
+     '<div class="verifyNote">Küçükkuyu Fenerbahçe Gönüllüleri<br>Dijital Doğrulama Sistemi</div>';
+   return;
+ }
  document.getElementById("kart").className="content";
  document.getElementById("kart").innerHTML=
    '<div class="status '+(aktif?'aktif':'pasif')+'">'+(aktif?'AKTİF ÜYE':'PASİF ÜYE')+'</div>'+
