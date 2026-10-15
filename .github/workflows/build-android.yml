@@ -27,6 +27,7 @@ jobs:
         run: gradle assembleDebug
       - name: Publish APK to site
         run: |
+          git pull --rebase origin main
           cp android-app/app/build/outputs/apk/debug/app-debug.apk Kucukkuyu-Taraftar-Karti.apk
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
