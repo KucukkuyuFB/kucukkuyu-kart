@@ -1,6 +1,6 @@
 {
-  "KKT-0191-M4N8B": {
-    "uyeNo": "0191",
+  "KKT-10001-M4N8B": {
+    "uyeNo": "10001",
     "adSoyad": "Abdullah Önen",
     "tip": "Kurucu Üye",
     "aylikAidat": "500",
@@ -8,8 +8,8 @@
     "durum": "Aktif",
     "aktif": true
   },
-  "KKT-0190-X7P2Q": {
-    "uyeNo": "0190",
+  "KKT-10002-X7P2Q": {
+    "uyeNo": "10002",
     "adSoyad": "Suha Sönmez",
     "tip": "Kurucu Üye",
     "aylikAidat": "500",
@@ -17,8 +17,8 @@
     "durum": "Aktif",
     "aktif": true
   },
-  "KKT-0192-R9T3L": {
-    "uyeNo": "0192",
+  "KKT-10003-R9T3L": {
+    "uyeNo": "10003",
     "adSoyad": "Hasan Özdemir",
     "tip": "Kurucu Üye",
     "aylikAidat": "500",
@@ -26,8 +26,8 @@
     "durum": "Aktif",
     "aktif": true
   },
-  "KKT-0193-V6C1Z": {
-    "uyeNo": "0193",
+  "KKT-10004-V6C1Z": {
+    "uyeNo": "10004",
     "adSoyad": "Erdal Aydın Bayar",
     "tip": "Kurucu Üye",
     "aylikAidat": "500",
@@ -35,8 +35,8 @@
     "durum": "Aktif",
     "aktif": true
   },
-  "KKT-0194-H2K7S": {
-    "uyeNo": "0194",
+  "KKT-10005-H2K7S": {
+    "uyeNo": "10005",
     "adSoyad": "Onur Demirkoparan",
     "tip": "Kurucu Üye",
     "aylikAidat": "500",
