@@ -7,20 +7,31 @@
 <style>
 :root{--navy:#071d49;--navy2:#103c7a;--yellow:#ffd500;--cream:#f7f3e6;--green:#17823b;--red:#b42318}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#ffd500 0%,#ffd500 42%,#f3f5f8 42%);min-height:100vh;color:#0b1e3d}
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#061632 0%,#0b2a5b 42%,#f3f5f8 42%);min-height:100vh;color:#0b1e3d}
 .wrap{width:100%;max-width:520px;margin:auto;padding:22px 16px 36px}
-.top{text-align:center;color:#071d49;padding:8px 8px 18px}
+.top{text-align:center;color:white;padding:8px 8px 18px}
+.logoPanel{
+  width:230px;
+  height:230px;
+  margin:0 auto 12px;
+  background:#071d49;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 10px 24px rgba(0,0,0,.28);
+}
 .logo{
-  width:190px;
-  height:190px;
+  width:215px;
+  height:215px;
   object-fit:contain;
   display:block;
-  margin:0 auto 10px;
+  margin:0;
   opacity:1;
   filter:none;
 }
 .title{font-size:21px;font-weight:900;line-height:1.2;margin:8px 0 4px;letter-spacing:.3px}
-.subtitle{font-size:13px;font-weight:800;letter-spacing:1.6px;color:#071d49}
+.subtitle{font-size:13px;font-weight:700;letter-spacing:1.6px;color:var(--yellow)}
 .card{background:white;border-radius:26px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.22);border:1px solid rgba(255,213,0,.45)}
 .band{height:9px;background:linear-gradient(90deg,var(--yellow) 0 50%,var(--navy) 50% 100%)}
 .content{padding:26px 22px 24px;background:linear-gradient(180deg,#fff,#fbfaf4)}
@@ -48,7 +59,7 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#ff
 <body>
 <div class="wrap">
   <div class="top">
-    <img class="logo" src="https://raw.githubusercontent.com/KucukkuyuFB/kucukkuyu-kart/main/logo.png?raw=1&v=16" alt="Küçükkuyu Fenerbahçe Gönüllüleri">
+    <div class="logoPanel"><img class="logo" src="./logo.png?v=21" alt="Küçükkuyu Fenerbahçe Gönüllüleri"></div>
     <div class="title">KÜÇÜKKUYU FENERBAHÇE GÖNÜLLÜLERİ</div>
     <div class="subtitle">DİJİTAL TARAFTAR KARTI</div>
   </div>
