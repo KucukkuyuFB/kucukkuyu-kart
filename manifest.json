@@ -1,0 +1,18 @@
+{
+  "name": "Küçükkuyu Fenerbahçe Gönüllüleri Taraftar Kartı",
+  "short_name": "Taraftar Kartı",
+  "description": "Küçükkuyu Fenerbahçe Gönüllüleri dijital taraftar kartı",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#071d49",
+  "theme_color": "#071d49",
+  "icons": [
+    {
+      "src": "./logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
