@@ -43,5 +43,14 @@
     "sonOdeme": "07.10.2026",
     "durum": "Aktif",
     "aktif": true
+  },
+  "KKT-10006-YEVML": {
+    "uyeNo": "10006",
+    "adSoyad": "",
+    "tip": "Kurucu Üye",
+    "aylikAidat": "500",
+    "sonOdeme": "",
+    "durum": "",
+    "aktif": false
   }
 }
