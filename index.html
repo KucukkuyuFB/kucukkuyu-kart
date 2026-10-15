@@ -71,7 +71,7 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#06
 .verifyText strong{color:#071d49}
 .verifyNote{margin-top:16px;font-size:11px;color:#7b8494;font-weight:700;line-height:1.5}
 .partnerBtn{display:block;margin-top:18px;text-decoration:none;background:#ffd500;color:#071d49;font-weight:900;text-align:center;padding:14px 16px;border-radius:14px;border:1px solid #e2bd00;box-shadow:0 6px 16px rgba(7,29,73,.12)}
-.installBtn{display:block;width:100%;margin-top:12px;border:0;background:#071d49;color:#fff;font:inherit;font-weight:900;text-align:center;padding:14px 16px;border-radius:14px;cursor:pointer;box-shadow:0 6px 16px rgba(7,29,73,.16)}
+.installBtn{display:block;width:100%;margin-top:12px;border:0;background:#071d49;color:#fff;font:inherit;font-weight:900;text-align:center;padding:14px 16px;border-radius:14px;cursor:pointer;box-shadow:0 6px 16px rgba(7,29,73,.16);text-decoration:none}
 .installBtn[hidden]{display:none}.installBtn:disabled{opacity:.55;cursor:default}
 .installHelp{display:none;margin-top:12px;padding:13px 14px;border-radius:12px;background:#f7f9fc;border:1px solid #e2e8f0;color:#334155;font-size:12px;line-height:1.5}
 .installHelp.show{display:block}
@@ -103,6 +103,7 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#06
 const params=new URLSearchParams(location.search);
 const kod=params.get("k");
 const mode=params.get("mode");
+const appMode=params.get("app")==="1";
 function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
 function hata(m){document.getElementById("kart").className="error";document.getElementById("kart").innerHTML=m}
 function tarihTR(v){
@@ -163,8 +164,7 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
      '<div class="qrNote">Bu QR kod okutulduğunda bu dijital taraftar kartı açılır.</div>'+
    '</div>'+
    '<a class="partnerBtn" href="./isyerleri.html?k='+encodeURIComponent(kod)+'&v=37">Üye İşyerlerini Gör</a>'+
-   '<button class="installBtn" id="installAppBtn" type="button">📱 Kartımı Ana Ekrana Ekle</button>'+
-   '<div class="installHelp" id="installHelp"></div>'+
+   (appMode ? '' : '<a class="installBtn" id="androidAppBtn" href="./Kucukkuyu-Taraftar-Karti.apk?v=1" download>📱 Android Uygulamasını Yükle</a>')+
    '<div class="code">Kart Kodu: '+esc(kod)+'</div>';
 })
 .catch(()=>hata("Kart bilgileri alınamadı."));
