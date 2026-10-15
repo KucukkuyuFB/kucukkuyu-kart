@@ -127,7 +127,7 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
    '<div class="name">'+esc(m.adSoyad)+'</div>'+
    '<div class="membershipBadge">'+esc(m.tip)+'</div>'+
    '<div class="memberNo">Üye No<strong>'+esc(m.uyeNo)+'</strong></div>'+
-   '<div class="thanksSlim">'+esc(uyelikMesaji(m))+'</div>'+
+   (aktif ? '<div class="thanksSlim">'+esc(uyelikMesaji(m))+'</div>' : '')+
    '<div class="grid">'+
      '<div class="row"><span class="label">Aylık Aidat</span><span class="value">'+esc(m.aylikAidat)+' TL</span></div>'+
      '<div class="row"><span class="label">Son Ödeme</span><span class="value">'+esc(m.sonOdeme)+'</span></div>'+
