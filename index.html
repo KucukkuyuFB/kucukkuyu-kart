@@ -163,7 +163,7 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
      '<div class="qrNote">Bu QR kod okutulduğunda bu dijital taraftar kartı açılır.</div>'+
    '</div>'+
    '<a class="partnerBtn" href="./isyerleri.html?k='+encodeURIComponent(kod)+'&v=37">Üye İşyerlerini Gör</a>'+
-   '<button class="installBtn" id="installAppBtn" type="button" disabled>📱 Kartımı Ana Ekrana Ekle</button>'+
+   '<button class="installBtn" id="installAppBtn" type="button">📱 Kartımı Ana Ekrana Ekle</button>'+
    '<div class="installHelp" id="installHelp"></div>'+
    '<div class="code">Kart Kodu: '+esc(kod)+'</div>';
 })
@@ -176,18 +176,13 @@ function syncInstallButton(){
 
   const isStandalone=window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone===true;
   if(isStandalone){
-    btn.disabled=true;
     btn.textContent="✓ Kart Telefona Eklendi";
+    btn.disabled=true;
     return;
   }
 
-  if(window.pwaInstallPrompt){
-    btn.disabled=false;
-    btn.textContent="📱 Kartımı Ana Ekrana Ekle";
-  }else{
-    btn.disabled=true;
-    btn.textContent="📱 Kurulum Hazırlanıyor...";
-  }
+  btn.disabled=false;
+  btn.textContent="📱 Kartımı Ana Ekrana Ekle";
 }
 
 window.addEventListener("pwaPromptReady",syncInstallButton);
@@ -202,22 +197,28 @@ window.addEventListener("appinstalled",function(){
 
 document.addEventListener("click",async function(e){
   if(!e.target || e.target.id!=="installAppBtn") return;
-  if(!window.pwaInstallPrompt) return;
 
-  try{
-    window.pwaInstallPrompt.prompt();
-    const choice=await window.pwaInstallPrompt.userChoice;
-    if(choice && choice.outcome==="accepted"){
-      e.target.textContent="✓ Kurulum Onaylandı";
-      e.target.disabled=true;
-    }
-  }catch(err){}
-  window.pwaInstallPrompt=null;
+  if(window.pwaInstallPrompt){
+    try{
+      window.pwaInstallPrompt.prompt();
+      const choice=await window.pwaInstallPrompt.userChoice;
+      if(choice && choice.outcome==="accepted"){
+        e.target.textContent="✓ Kurulum Onaylandı";
+        e.target.disabled=true;
+      }
+    }catch(err){}
+    window.pwaInstallPrompt=null;
+    return;
+  }
+
+  const help=document.getElementById("installHelp");
+  if(help){
+    help.innerHTML='Bu telefonda Chrome henüz doğrudan kurulum izni vermedi. Bir süre sonra tekrar deneyebilirsin.';
+    help.classList.add("show");
+  }
 });
 
 setTimeout(syncInstallButton,0);
-setTimeout(syncInstallButton,800);
-setTimeout(syncInstallButton,2000);
 </script>
 </body>
 </html>
