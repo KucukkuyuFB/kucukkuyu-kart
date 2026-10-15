@@ -9,6 +9,14 @@
 <meta name="apple-mobile-web-app-title" content="Taraftar Kartı">
 <link rel="manifest" href="./manifest.json?v=2">
 <link rel="apple-touch-icon" href="./icon-192.png">
+<script>
+window.pwaInstallPrompt=null;
+window.addEventListener("beforeinstallprompt",function(e){
+  e.preventDefault();
+  window.pwaInstallPrompt=e;
+  window.dispatchEvent(new Event("pwaPromptReady"));
+});
+</script>
 <title>Küçükkuyu Fenerbahçe Gönüllüleri Taraftar Kartı</title>
 <style>
 :root{--navy:#071d49;--navy2:#103c7a;--yellow:#ffd500;--green:#17823b;--red:#b42318}
@@ -64,7 +72,7 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#06
 .verifyNote{margin-top:16px;font-size:11px;color:#7b8494;font-weight:700;line-height:1.5}
 .partnerBtn{display:block;margin-top:18px;text-decoration:none;background:#ffd500;color:#071d49;font-weight:900;text-align:center;padding:14px 16px;border-radius:14px;border:1px solid #e2bd00;box-shadow:0 6px 16px rgba(7,29,73,.12)}
 .installBtn{display:block;width:100%;margin-top:12px;border:0;background:#071d49;color:#fff;font:inherit;font-weight:900;text-align:center;padding:14px 16px;border-radius:14px;cursor:pointer;box-shadow:0 6px 16px rgba(7,29,73,.16)}
-.installBtn[hidden]{display:none}
+.installBtn[hidden]{display:none}.installBtn:disabled{opacity:.55;cursor:default}
 .installHelp{display:none;margin-top:12px;padding:13px 14px;border-radius:12px;background:#f7f9fc;border:1px solid #e2e8f0;color:#334155;font-size:12px;line-height:1.5}
 .installHelp.show{display:block}
 .partnerBtn:active{transform:translateY(1px)}
@@ -155,74 +163,61 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
      '<div class="qrNote">Bu QR kod okutulduğunda bu dijital taraftar kartı açılır.</div>'+
    '</div>'+
    '<a class="partnerBtn" href="./isyerleri.html?k='+encodeURIComponent(kod)+'&v=37">Üye İşyerlerini Gör</a>'+
-   '<button class="installBtn" id="installAppBtn" type="button">📱 Kartımı Telefona Ekle</button>'+
+   '<button class="installBtn" id="installAppBtn" type="button" disabled>📱 Kartımı Ana Ekrana Ekle</button>'+
    '<div class="installHelp" id="installHelp"></div>'+
    '<div class="code">Kart Kodu: '+esc(kod)+'</div>';
 })
 .catch(()=>hata("Kart bilgileri alınamadı."));
 }
 
-let deferredInstallPrompt=null;
-
-if(kod){
-  try{localStorage.setItem("lastCardCode",kod);}catch(e){}
-}else{
-  try{
-    const savedCode=localStorage.getItem("lastCardCode");
-    if(savedCode){
-      window.location.replace("./?k="+encodeURIComponent(savedCode)+"&from=app");
-    }
-  }catch(e){}
-}
-
-if("serviceWorker" in navigator){
-  window.addEventListener("load",function(){
-    navigator.serviceWorker.register("./sw.js").catch(function(){});
-  });
-}
-
-window.addEventListener("beforeinstallprompt",function(e){
-  e.preventDefault();
-  deferredInstallPrompt=e;
+function syncInstallButton(){
   const btn=document.getElementById("installAppBtn");
-  if(btn) btn.hidden=false;
-});
+  if(!btn) return;
 
+  const isStandalone=window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone===true;
+  if(isStandalone){
+    btn.disabled=true;
+    btn.textContent="✓ Kart Telefona Eklendi";
+    return;
+  }
+
+  if(window.pwaInstallPrompt){
+    btn.disabled=false;
+    btn.textContent="📱 Kartımı Ana Ekrana Ekle";
+  }else{
+    btn.disabled=true;
+    btn.textContent="📱 Kurulum Hazırlanıyor...";
+  }
+}
+
+window.addEventListener("pwaPromptReady",syncInstallButton);
 window.addEventListener("appinstalled",function(){
-  deferredInstallPrompt=null;
+  window.pwaInstallPrompt=null;
   const btn=document.getElementById("installAppBtn");
-  if(btn){btn.textContent="✓ Telefona Eklendi";btn.disabled=true;}
+  if(btn){
+    btn.disabled=true;
+    btn.textContent="✓ Kart Telefona Eklendi";
+  }
 });
 
 document.addEventListener("click",async function(e){
   if(!e.target || e.target.id!=="installAppBtn") return;
+  if(!window.pwaInstallPrompt) return;
 
-  const help=document.getElementById("installHelp");
-  const isStandalone=window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone===true;
-  if(isStandalone){
-    e.target.textContent="✓ Zaten Telefona Eklendi";
-    e.target.disabled=true;
-    return;
-  }
-
-  if(deferredInstallPrompt){
-    deferredInstallPrompt.prompt();
-    try{await deferredInstallPrompt.userChoice;}catch(err){}
-    deferredInstallPrompt=null;
-    return;
-  }
-
-  const ua=navigator.userAgent||"";
-  const isIOS=/iphone|ipad|ipod/i.test(ua);
-  if(help){
-    if(isIOS){
-      help.innerHTML='iPhone için: Safari’de alttaki <strong>Paylaş</strong> simgesine dokun → <strong>Ana Ekrana Ekle</strong> seç.';
-    }else{
-      help.innerHTML='Tarayıcı menüsünü aç → <strong>Ana ekrana ekle</strong> veya <strong>Uygulamayı yükle</strong> seçeneğine dokun.';
+  try{
+    window.pwaInstallPrompt.prompt();
+    const choice=await window.pwaInstallPrompt.userChoice;
+    if(choice && choice.outcome==="accepted"){
+      e.target.textContent="✓ Kurulum Onaylandı";
+      e.target.disabled=true;
     }
-    help.classList.add("show");
-  }
+  }catch(err){}
+  window.pwaInstallPrompt=null;
 });
+
+setTimeout(syncInstallButton,0);
+setTimeout(syncInstallButton,800);
+setTimeout(syncInstallButton,2000);
 </script>
 </body>
 </html>
