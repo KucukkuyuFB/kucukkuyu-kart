@@ -52,8 +52,8 @@
   "KKT-10006-YEVML": {
     "uyeNo": "10006",
     "adSoyad": "",
-    "tip": "Kurucu Üye",
-    "aylikAidat": "500",
+    "tip": "Normal Üye",
+    "aylikAidat": "300",
     "sonOdeme": "01.10.2026",
     "durum": "Aktif",
     "uyelikBaslangic": "01.09.2026",
