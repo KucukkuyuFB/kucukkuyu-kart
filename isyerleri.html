@@ -43,10 +43,36 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#07
   <div class="footer">Küçükkuyu Fenerbahçe Gönüllüleri</div>
 </div>
 <script>
-const backKod=new URLSearchParams(window.location.search).get("k");
+const params=new URLSearchParams(window.location.search);
+const backKod=params.get("k");
+const backLink=document.getElementById("backLink");
+
+let hedef="";
 if(backKod){
-  document.getElementById("backLink").href="./?k="+encodeURIComponent(backKod)+"&v=36";
+  hedef="./?k="+encodeURIComponent(backKod)+"&v=38";
 }
+
+if(!hedef){
+  try{
+    const saved=localStorage.getItem("lastCardUrl");
+    if(saved && saved.includes("?k=")) hedef=saved;
+  }catch(e){}
+}
+
+if(!hedef && document.referrer && document.referrer.includes("/kucukkuyu-kart/") && document.referrer.includes("?k=")){
+  hedef=document.referrer;
+}
+
+backLink.addEventListener("click",function(e){
+  e.preventDefault();
+  if(hedef){
+    window.location.href=hedef;
+  }else if(history.length>1){
+    history.back();
+  }else{
+    window.location.href="./";
+  }
+});
 </script>
 </body>
 </html>

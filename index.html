@@ -113,6 +113,9 @@ function uyelikMesaji(m){
  const sure=sureMetni(m.uyelikBaslangic);
  return sure ? sure+"dür ailemizle birlikte olduğun için teşekkürler!" : "Ailemize katıldığın için teşekkürler!";
 }
+if(kod){
+  try{localStorage.setItem("lastCardUrl", window.location.href);}catch(e){}
+}
 if(!kod){hata("Kart kodu bulunamadı.")}else{
 fetch("./members.json?v="+Date.now(),{cache:"no-store"})
 .then(r=>{if(!r.ok)throw new Error();return r.json()})
