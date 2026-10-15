@@ -22,7 +22,7 @@
     "adSoyad": "Hasan Özdemir",
     "tip": "Kurucu Üye",
     "aylikAidat": "500",
-    "sonOdeme": "01.09.2026",
+    "sonOdeme": "01.10.2026",
     "durum": "Aktif",
     "aktif": true
   },
@@ -31,7 +31,7 @@
     "adSoyad": "Erdal Aydın Bayar",
     "tip": "Kurucu Üye",
     "aylikAidat": "500",
-    "sonOdeme": "05.10.2026",
+    "sonOdeme": "01.10.2026",
     "durum": "Aktif",
     "aktif": true
   },
@@ -40,7 +40,7 @@
     "adSoyad": "Onur Demirkoparan",
     "tip": "Kurucu Üye",
     "aylikAidat": "500",
-    "sonOdeme": "07.10.2026",
+    "sonOdeme": "01.10.2026",
     "durum": "Aktif",
     "aktif": true
   },
@@ -49,8 +49,8 @@
     "adSoyad": "",
     "tip": "Kurucu Üye",
     "aylikAidat": "500",
-    "sonOdeme": "",
-    "durum": "",
-    "aktif": false
+    "sonOdeme": "01.10.2026",
+    "durum": "Aktif",
+    "aktif": true
   }
 }
