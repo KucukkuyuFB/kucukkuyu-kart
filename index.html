@@ -35,6 +35,15 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#06
 .aktif{background:#dff4e5;color:var(--green)}
 .pasif{background:#fde3e1;color:var(--red)}
 .name{font-size:29px;font-weight:900;color:var(--navy);margin:18px 0 10px}
+
+.topHeader{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px}
+.topLeft{flex:1;min-width:0}
+.memberTypeBadge{display:inline-block;background:#fff1a8;color:#071d49;font-size:14px;font-weight:900;padding:9px 16px;border-radius:999px;margin:0 0 16px}
+.memberName{font-size:29px;line-height:1.1;font-weight:900;color:#071d49;margin:0}
+.topRight{min-width:105px;text-align:right;padding-top:6px}
+.memberNoLabel{font-size:12px;color:#7b8494;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.memberNoValue{font-size:24px;font-weight:900;color:#071d49;line-height:1.1}
+
 .membershipBadge{
   display:inline-block;
   background:#fff1a8;
@@ -147,9 +156,18 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
  const qrLinki="https://quickchart.io/qr?size=400&text="+encodeURIComponent(verifyLinki);
  document.getElementById("kart").className="content";
  document.getElementById("kart").innerHTML=
-   '<div class="status '+(aktif?'aktif':'pasif')+'">'+(aktif?'AKTİF ÜYE':'PASİF ÜYE')+'</div>'+
-   '<div class="name">'+esc(m.adSoyad)+'</div>'+
-   '<div class="membershipBadge">'+esc(m.tip)+'</div>'+
+   '<div class="topHeader">'+
+     '<div class="topLeft">'+
+       '<div class="memberTypeBadge">'+esc(m.tip)+'</div>'+
+       '<div class="memberName">'+esc(m.adSoyad)+'</div>'+
+     '</div>'+
+     '<div class="topRight">'+
+       '<div class="memberNoLabel">ÜYE NO</div>'+
+       '<div class="memberNoValue">'+esc(m.uyeNo)+'</div>'+
+     '</div>'+
+   '</div>'+
+   
+   
    '<div class="memberNo">Üye No<strong>'+esc(m.uyeNo)+'</strong></div>'+
    (aktif ? '<div class="thanksSlim">'+esc(uyelikMesaji(m))+'</div>' : '')+
    '<div class="grid">'+
