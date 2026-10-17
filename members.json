@@ -51,12 +51,12 @@
   },
   "KKT-10006-YEVML": {
     "uyeNo": "10006",
-    "adSoyad": "Adem Demir",
+    "adSoyad": "Tuncay Özer",
     "tip": "Normal Üye",
     "aylikAidat": "300",
     "sonOdeme": "01.10.2026",
-    "durum": "Pasif",
-    "uyelikBaslangic": "01.09.2026",
-    "aktif": false
+    "durum": "Aktif",
+    "uyelikBaslangic": "01.10.2026",
+    "aktif": true
   }
 }
