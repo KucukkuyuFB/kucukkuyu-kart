@@ -168,9 +168,10 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
    
    (aktif ? '<div class="thanksSlim">'+esc(uyelikMesaji(m))+'</div>' : '')+
    '<div class="grid">'+
-     '<div class="row"><span class="label">Aylık Aidat</span><span class="value">'+esc(m.aylikAidat)+' TL</span></div>'+
-     '<div class="row"><span class="label">Son Ödeme</span><span class="value">'+esc(m.sonOdeme)+'</span></div>'+
-     '<div class="row"><span class="label">Durum</span><span class="value">'+esc(m.durum)+'</span></div>'+
+     '<div class="row"><span class="label">Üyelik Durumu</span><span class="value">'+esc(m.durum)+'</span></div>'+
+     '<div class="row"><span class="label">Üyelik Başlangıç Tarihi</span><span class="value">'+esc(m.uyelikBaslangic||"-")+'</span></div>'+
+     '<div class="row"><span class="label">Aidat Ödeme Tarihi</span><span class="value">'+esc(m.sonOdeme||"-")+'</span></div>'+
+     '<div class="row"><span class="label">Aidat Tutarı</span><span class="value">'+esc(m.aylikAidat)+' TL</span></div>'+
    '</div>'+
 
    '<div class="qrBox">'+
