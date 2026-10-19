@@ -13,13 +13,33 @@ body{margin:0;background:#eef2f7;font-family:Arial,Helvetica,sans-serif;color:#0
 .title{font-size:24px;font-weight:900}
 .sub{margin-top:4px;font-size:13px;opacity:.85;font-weight:700}
 .card{background:#fff;border-radius:0 0 20px 20px;padding:18px;box-shadow:0 10px 28px rgba(7,29,73,.12)}
-.ann{background:#f7f9fc;border:1px solid #e1e7ef;border-left:5px solid var(--yellow);border-radius:14px;padding:15px 16px;margin-bottom:12px}
+.ann{background:#f7f9fc;border:1px solid #e1e7ef;border-left:5px solid var(--yellow);border-radius:14px;padding:15px 16px;margin-bottom:12px;position:relative;overflow:hidden}
 .ann h3{margin:0 0 7px;color:var(--navy);font-size:18px}
 .ann p{margin:0;line-height:1.55;font-size:14px;font-weight:600}
 .date{margin-top:10px;font-size:11px;color:#7b8494;font-weight:700}
 .btn{display:inline-block;margin-top:12px;text-decoration:none;background:var(--navy);color:#fff;padding:10px 13px;border-radius:10px;font-weight:900;font-size:12px}
 .empty{padding:28px 14px;text-align:center;color:#7b8494;font-weight:700}
 .back{display:block;margin-top:14px;text-decoration:none;background:var(--yellow);color:var(--navy);font-weight:900;text-align:center;padding:14px 16px;border-radius:14px;border:1px solid #e2bd00}
+.ann.birthday{background:linear-gradient(135deg,#fffdf5 0%,#fef7d9 100%);border:1px solid #f3d765;border-left:7px solid #ffb703;box-shadow:0 10px 24px rgba(255,183,3,.18);padding-right:108px;min-height:122px}
+.ann.birthday h3{color:#d97706;font-size:22px;margin-bottom:10px}
+.ann.birthday p{color:#071d49;font-size:15px;line-height:1.6}
+.birthdayDecor{position:absolute;top:10px;right:12px;display:flex;gap:8px;align-items:flex-start}
+.balloon{width:22px;height:28px;border-radius:50% 50% 45% 45%;position:relative;animation:floatBalloon 2.8s ease-in-out infinite}
+.balloon:after{content:"";position:absolute;left:50%;top:28px;width:1px;height:18px;background:#888;transform:translateX(-50%)}
+.balloon.red{background:#ef4444}
+.balloon.blue{background:#3b82f6;animation-delay:.4s}
+.balloon.yellow{background:#facc15;animation-delay:.8s}
+@keyframes floatBalloon{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.confetti{position:absolute;inset:0;pointer-events:none}
+.confetti span{position:absolute;width:8px;height:12px;opacity:.95;border-radius:2px;animation:fall 4s linear infinite}
+.confetti span:nth-child(1){left:8%;top:-10px;background:#ef4444;animation-delay:0s}
+.confetti span:nth-child(2){left:18%;top:-14px;background:#3b82f6;animation-delay:.6s}
+.confetti span:nth-child(3){left:34%;top:-8px;background:#facc15;animation-delay:1.1s}
+.confetti span:nth-child(4){left:52%;top:-12px;background:#10b981;animation-delay:.2s}
+.confetti span:nth-child(5){left:68%;top:-16px;background:#fb7185;animation-delay:1.5s}
+.confetti span:nth-child(6){left:82%;top:-11px;background:#a855f7;animation-delay:.9s}
+@keyframes fall{0%{transform:translateY(0) rotate(0deg);opacity:0}10%{opacity:1}100%{transform:translateY(120px) rotate(220deg);opacity:0}}
+@media(max-width:520px){.ann.birthday{padding-right:84px}.balloon{width:18px;height:24px}.balloon:after{top:24px}.birthdayDecor{right:8px;gap:6px}}
 </style>
 </head>
 <body>
@@ -46,6 +66,7 @@ function parseTR(v){
 const q=new URLSearchParams(location.search);
 const k=q.get("k");
 if(k) document.getElementById("back").href="./?k="+encodeURIComponent(k);
+
 fetch("./duyurular.json?v="+Date.now(),{cache:"no-store"})
 .then(r=>r.ok?r.json():[])
 .then(list=>{
@@ -59,15 +80,32 @@ fetch("./duyurular.json?v="+Date.now(),{cache:"no-store"})
    if(bas&&bugun<bas) return false;
    if(bit&&bugun>bit) return false;
    return true;
- }).sort((a,b)=>(Number(a.oncelik)||999)-(Number(b.oncelik)||999));
- if(!aktif.length){el.className="empty";el.textContent="Şu anda aktif duyuru bulunmuyor.";return;}
+ });
+
+ aktif.sort((a,b)=>{
+   const aBirthday=String(a.baslik||"").trim().toUpperCase()==="DOĞUM GÜNÜ";
+   const bBirthday=String(b.baslik||"").trim().toUpperCase()==="DOĞUM GÜNÜ";
+   if(aBirthday&&!bBirthday) return -1;
+   if(!aBirthday&&bBirthday) return 1;
+   return (Number(a.oncelik)||999)-(Number(b.oncelik)||999);
+ });
+
+ if(!aktif.length){
+   el.className="empty";
+   el.textContent="Şu anda aktif duyuru bulunmuyor.";
+   return;
+ }
  el.className="";
  el.innerHTML=aktif.map(x=>{
-   const tarih=(x.baslangic||x.bitis)?'<div class="date">'+esc(x.baslangic||"")+(x.bitis?' - '+esc(x.bitis):'')+'</div>':"";
+   const isBirthday=String(x.baslik||"").trim().toUpperCase()==="DOĞUM GÜNÜ";
+   const tarih=isBirthday?"":((x.baslangic||x.bitis)?'<div class="date">'+esc(x.baslangic||"")+(x.bitis?' - '+esc(x.bitis):'')+'</div>':"");
    const btn=(x.link&&x.buton)?'<a class="btn" href="'+esc(x.link)+'" target="_blank" rel="noopener">'+esc(x.buton)+'</a>':"";
-   return '<div class="ann"><h3>'+esc(x.baslik||"Duyuru")+'</h3><p>'+esc(x.metin||"")+'</p>'+tarih+btn+'</div>';
+   const dekor=isBirthday?'<div class="birthdayDecor"><div class="balloon red"></div><div class="balloon blue"></div><div class="balloon yellow"></div></div><div class="confetti"><span></span><span></span><span></span><span></span><span></span><span></span></div>':"";
+   const baslik=isBirthday?"🎉 DOĞUM GÜNÜ":esc(x.baslik||"Duyuru");
+   return '<div class="ann '+(isBirthday?'birthday':'')+'">'+dekor+'<h3>'+baslik+'</h3><p>'+esc(x.metin||"")+'</p>'+tarih+btn+'</div>';
  }).join("");
-}).catch(()=>{
+})
+.catch(()=>{
  const el=document.getElementById("list");
  el.className="empty";
  el.textContent="Duyurular şu anda yüklenemedi.";
