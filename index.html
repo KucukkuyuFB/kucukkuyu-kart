@@ -65,6 +65,13 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#06
 .label{font-size:12px;color:#7b8494;font-weight:800;text-transform:uppercase;letter-spacing:.5px}
 .labelNote{display:block;margin-top:5px;font-size:10px;line-height:1.35;font-weight:600;text-transform:none;letter-spacing:0;color:#9aa2af;max-width:210px}
 .value{font-size:16px;color:#111f3a;font-weight:800;text-align:right}
+.announcements{margin-top:20px}
+.annTitle{font-size:13px;font-weight:900;color:#071d49;text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
+.annCard{background:#f7f9fc;border:1px solid #e1e7ef;border-left:4px solid #ffd500;border-radius:14px;padding:13px 14px;margin-top:9px}
+.annCard:first-of-type{margin-top:0}
+.annHead{font-size:15px;font-weight:900;color:#071d49;margin-bottom:6px}
+.annText{font-size:13px;line-height:1.5;color:#334155;font-weight:600}
+.annBtn{display:inline-block;margin-top:10px;text-decoration:none;background:#071d49;color:#fff;font-size:12px;font-weight:900;padding:9px 12px;border-radius:10px}
 .qrBox{margin-top:20px;background:#fff;border:1px solid #e9edf3;border-radius:18px;padding:16px;text-align:center}
 .qrTitle{font-size:12px;color:#7b8494;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
 .qrImage{width:180px;height:180px;object-fit:contain;display:block;margin:0 auto 8px;background:#fff}
@@ -155,6 +162,38 @@ function aidatDonemi(sonOdeme){
 function tarihYaz(d){
  return String(d.getDate()).padStart(2,"0")+"."+String(d.getMonth()+1).padStart(2,"0")+"."+d.getFullYear();
 }
+function parseDuyuruTarihi(v){
+ if(!v) return null;
+ const p=String(v).trim().split(".");
+ if(p.length!==3) return null;
+ const d=new Date(Number(p[2]),Number(p[1])-1,Number(p[0]));
+ d.setHours(0,0,0,0);
+ return isNaN(d)?null:d;
+}
+function duyurulariYukle(){
+ const alan=document.getElementById("duyurular");
+ if(!alan) return;
+ fetch("./duyurular.json?v="+Date.now(),{cache:"no-store"})
+ .then(r=>r.ok?r.json():[])
+ .then(list=>{
+   if(!Array.isArray(list)||!list.length){alan.innerHTML="";return;}
+   const bugun=new Date(); bugun.setHours(0,0,0,0);
+   const aktif=list.filter(x=>{
+     const yayin=String(x.yayinda||x.yayin||"").trim().toLowerCase();
+     if(!["evet","e","true","1","yayında","yayinda"].includes(yayin)) return false;
+     const bas=parseDuyuruTarihi(x.baslangic||x.baslangicTarihi);
+     const bit=parseDuyuruTarihi(x.bitis||x.bitisTarihi);
+     if(bas&&bugun<bas) return false;
+     if(bit&&bugun>bit) return false;
+     return true;
+   }).sort((a,b)=>(Number(a.oncelik)||999)-(Number(b.oncelik)||999));
+   if(!aktif.length){alan.innerHTML="";return;}
+   alan.innerHTML='<div class="annTitle">Duyurular</div>'+aktif.map(x=>{
+     const btn=(x.link&&x.buton)?'<a class="annBtn" href="'+esc(x.link)+'" target="_blank" rel="noopener">'+esc(x.buton)+'</a>':"";
+     return '<div class="annCard"><div class="annHead">'+esc(x.baslik||"Duyuru")+'</div><div class="annText">'+esc(x.metin||"")+'</div>'+btn+'</div>';
+   }).join("");
+ }).catch(()=>{alan.innerHTML="";});
+}
 function aidatUyarisi(m){
  const donem=aidatDonemi(m.sonOdeme);
  if(!donem) return "";
@@ -209,6 +248,7 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
      '<div class="row"><span class="label">Aidat Son Ödeme Tarihi<span class="labelNote">Üye aidatları her ayın en geç 15\'ine kadar ödenmelidir!</span></span><span class="value">'+(aidatDonemi(m.sonOdeme)?tarihYaz(aidatDonemi(m.sonOdeme).son):"-")+'</span></div>'+
      '<div class="row"><span class="label">Aidat Tutarı</span><span class="value">'+esc(m.aylikAidat)+' TL</span></div>'+
    '</div>'+
+   '<div id="duyurular" class="announcements"></div>'+ 
 
    '<div class="qrBox">'+
      '<div class="qrTitle">Kart QR Kodu</div>'+
@@ -218,6 +258,7 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
    '<a class="partnerBtn" href="./isyerleri.html?k='+encodeURIComponent(kod)+'&v=37">Üye İşyerlerini Gör</a>'+
 
    '<div class="code">Kart Kodu: '+esc(kod)+'</div>';
+ duyurulariYukle();
 })
 .catch(()=>hata("Kart bilgileri alınamadı."));
 }
