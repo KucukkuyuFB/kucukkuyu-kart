@@ -14,7 +14,7 @@
     "adSoyad": "C.Suha Sönmez",
     "tip": "Kurucu Üye",
     "aylikAidat": "500",
-    "sonOdeme": "01.09.2026",
+    "sonOdeme": "01.10.2026",
     "durum": "Aktif",
     "uyelikBaslangic": "01.09.2026",
     "aktif": true
@@ -52,7 +52,7 @@
   "KKT-20001-YEVML": {
     "uyeNo": "20001",
     "adSoyad": "Tuncay Özer",
-    "tip": "Normal Üye",
+    "tip": "Üye",
     "aylikAidat": "300",
     "sonOdeme": "01.10.2026",
     "durum": "Aktif",
