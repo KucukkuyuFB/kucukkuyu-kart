@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Üyelik Başvurusu | Küçükkuyu Fenerbahçe Gönüllüleri</title>
+<style>
+:root{--navy:#071d49;--yellow:#ffd500;--bg:#eef2f7}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#071d49 0,#0b2a5b 28%,var(--bg) 28%);min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:#071d49}
+.wrap{max-width:680px;margin:0 auto;padding:22px 14px 40px}
+.head{text-align:center;color:#fff;padding:10px 10px 24px}
+.head h1{margin:0;font-size:24px;font-weight:900}
+.head p{margin:8px 0 0;color:var(--yellow);font-weight:800}
+.card{background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 18px 45px rgba(0,0,0,.18);border:1px solid rgba(255,213,0,.45)}
+.band{height:8px;background:linear-gradient(90deg,var(--yellow) 0 50%,var(--navy) 50%)}
+.content{padding:22px}
+.intro{font-size:14px;line-height:1.55;color:#475569;margin-bottom:18px}
+label{display:block;font-size:12px;font-weight:900;color:#334155;margin:14px 0 6px;text-transform:uppercase;letter-spacing:.4px}
+input,select,textarea{width:100%;padding:13px 14px;border:1px solid #d8dee8;border-radius:12px;font:inherit;background:#fff;color:#0b1e3d}
+textarea{min-height:90px;resize:vertical}
+.check{display:flex;gap:10px;align-items:flex-start;margin-top:16px;font-size:13px;line-height:1.45;color:#475569}
+.check input{width:auto;margin-top:3px}
+button{width:100%;margin-top:18px;border:0;border-radius:14px;background:var(--yellow);color:var(--navy);font-size:16px;font-weight:900;padding:15px;cursor:pointer}
+button:disabled{opacity:.55;cursor:default}
+.msg{display:none;margin-top:15px;padding:13px 14px;border-radius:12px;font-size:13px;font-weight:800}
+.msg.ok{display:block;background:#e8f7ec;color:#176b32;border:1px solid #bfe2c8}
+.msg.err{display:block;background:#fff0f0;color:#9b1c1c;border:1px solid #efb1b1}
+.note{font-size:11px;color:#8490a0;margin-top:14px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>KÜÇÜKKUYU FENERBAHÇE GÖNÜLLÜLERİ</h1>
+    <p>ÜYELİK BAŞVURU FORMU</p>
+  </div>
+  <div class="card">
+    <div class="band"></div>
+    <div class="content">
+      <div class="intro">Üyelik başvurunuzu aşağıdaki formdan iletebilirsiniz. Başvurunuz incelendikten sonra onaylanan üyeler için dijital taraftar kartı hazırlanacaktır.</div>
+      <form id="form">
+        <label>Ad Soyad</label>
+        <input name="adSoyad" required autocomplete="name">
+
+        <label>Telefon</label>
+        <input name="telefon" required inputmode="tel" placeholder="05xx xxx xx xx">
+
+        <label>Doğum Tarihi</label>
+        <input name="dogumTarihi" type="date" required>
+
+        <label>Üyelik Tipi</label>
+        <select name="uyelikTipi" required>
+          <option value="">Seçiniz</option>
+          <option>Üye</option>
+          <option>Kurucu Üye</option>
+        </select>
+
+        <label>İlçe / Mahalle</label>
+        <input name="konum" placeholder="Örn. Küçükkuyu">
+
+        <label>Not</label>
+        <textarea name="not" placeholder="Varsa eklemek istediğiniz not"></textarea>
+
+        <label class="check">
+          <input type="checkbox" name="kvkk" required>
+          <span>Başvuru kapsamında verdiğim kişisel bilgilerin üyelik işlemlerinin yürütülmesi amacıyla kullanılmasını kabul ediyorum.</span>
+        </label>
+
+        <button id="submitBtn" type="submit">Başvuruyu Gönder</button>
+        <div id="msg" class="msg"></div>
+      </form>
+      <div class="note">Başvuru gönderimi bağlantısı hazırlanıyor. Form sayfası aktif; otomatik kayıt bağlantısı tamamlandığında başvurular doğrudan Google Sheet'e düşecektir.</div>
+    </div>
+  </div>
+</div>
+<script>
+const ENDPOINT="";
+const form=document.getElementById("form");
+const btn=document.getElementById("submitBtn");
+const msg=document.getElementById("msg");
+form.addEventListener("submit",async e=>{
+  e.preventDefault();
+  msg.className="msg";
+  if(!ENDPOINT){
+    msg.textContent="Başvuru kayıt bağlantısı henüz etkinleştirilmedi.";
+    msg.classList.add("err");
+    return;
+  }
+  btn.disabled=true;
+  try{
+    const fd=new FormData(form);
+    fd.set("kvkk",form.kvkk.checked?"EVET":"HAYIR");
+    const res=await fetch(ENDPOINT,{method:"POST",body:fd});
+    const out=await res.json();
+    if(!out.ok) throw new Error(out.message||"Gönderim başarısız");
+    msg.textContent="Başvurunuz alındı. Teşekkür ederiz.";
+    msg.classList.add("ok");
+    form.reset();
+  }catch(err){
+    msg.textContent="Başvuru gönderilemedi. Lütfen daha sonra tekrar deneyin.";
+    msg.classList.add("err");
+  }finally{btn.disabled=false}
+});
+</script>
+</body>
+</html>
