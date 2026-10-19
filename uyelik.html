@@ -52,17 +52,10 @@ button:disabled{opacity:.55;cursor:default}
         <label>Üyelik Tipi</label>
         <select name="uyelikTipi" required>
           <option value="">Seçiniz</option>
-          <option>Üye</option>
-          <option>Kurucu Üye</option>
+          <option value="Üye">Üye - Aidat Bedeli 300 TL</option>
+          <option value="Kurucu Üye">Kurucu Üye - Aidat Bedeli 500 TL</option>
         </select>
-
-        <label>İlçe / Mahalle</label>
-        <input name="konum" placeholder="Örn. Küçükkuyu">
-
-        <label>Not</label>
-        <textarea name="not" placeholder="Varsa eklemek istediğiniz not"></textarea>
-
-        <label class="check">
+<label class="check">
           <input type="checkbox" name="kvkk" required>
           <span>Başvuru kapsamında verdiğim kişisel bilgilerin üyelik işlemlerinin yürütülmesi amacıyla kullanılmasını kabul ediyorum.</span>
         </label>
