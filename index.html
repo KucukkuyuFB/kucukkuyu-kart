@@ -174,15 +174,14 @@ function parseDuyuruTarihi(v){
  d.setHours(0,0,0,0);
  return isNaN(d)?null:d;
 }
-function duyurulariYukle(){
- const alan=document.getElementById("duyurular");
- if(!alan) return;
+function duyuruNoktasiGuncelle(){
  fetch("./duyurular.json?v="+Date.now(),{cache:"no-store"})
  .then(r=>r.ok?r.json():[])
  .then(list=>{
-   if(!Array.isArray(list)||!list.length){alan.innerHTML="";return;}
+   const dot=document.getElementById("announceDot");
+   if(!dot||!Array.isArray(list)) return;
    const bugun=new Date(); bugun.setHours(0,0,0,0);
-   const aktif=list.filter(x=>{
+   const aktif=list.some(x=>{
      const yayin=String(x.yayinda||x.yayin||"").trim().toLowerCase();
      if(!["evet","e","true","1","yayında","yayinda"].includes(yayin)) return false;
      const bas=parseDuyuruTarihi(x.baslangic||x.baslangicTarihi);
@@ -190,15 +189,9 @@ function duyurulariYukle(){
      if(bas&&bugun<bas) return false;
      if(bit&&bugun>bit) return false;
      return true;
-   }).sort((a,b)=>(Number(a.oncelik)||999)-(Number(b.oncelik)||999));
-   const dot=document.getElementById("announceDot");
-   if(dot) dot.classList.toggle("active",aktif.length>0);
-   if(!aktif.length){alan.innerHTML='<div class="annTitle">Duyurular</div><div class="annCard"><div class="annText">Şu anda aktif duyuru bulunmuyor.</div></div>';return;}
-   alan.innerHTML='<div class="annTitle">Duyurular</div>'+aktif.map(x=>{
-     const btn=(x.link&&x.buton)?'<a class="annBtn" href="'+esc(x.link)+'" target="_blank" rel="noopener">'+esc(x.buton)+'</a>':"";
-     return '<div class="annCard"><div class="annHead">'+esc(x.baslik||"Duyuru")+'</div><div class="annText">'+esc(x.metin||"")+'</div>'+btn+'</div>';
-   }).join("");
- }).catch(()=>{const dot=document.getElementById("announceDot");if(dot)dot.classList.remove("active");alan.innerHTML='<div class="annTitle">Duyurular</div><div class="annCard"><div class="annText">Duyurular şu anda yüklenemedi.</div></div>';});
+   });
+   dot.classList.toggle("active",aktif);
+ }).catch(()=>{});
 }
 function aidatUyarisi(m){
  const donem=aidatDonemi(m.sonOdeme);
@@ -254,18 +247,16 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
      '<div class="row"><span class="label">Aidat Son Ödeme Tarihi<span class="labelNote">Üye aidatları her ayın en geç 15\'ine kadar ödenmelidir!</span></span><span class="value">'+(aidatDonemi(m.sonOdeme)?tarihYaz(aidatDonemi(m.sonOdeme).son):"-")+'</span></div>'+
      '<div class="row"><span class="label">Aidat Tutarı</span><span class="value">'+esc(m.aylikAidat)+' TL</span></div>'+
    '</div>'+
-   '<div id="duyurular" class="announcements"></div>'+ 
-
    '<div class="qrBox">'+
      '<div class="qrTitle">Kart QR Kodu</div>'+
      '<img class="qrImage" src="'+qrLinki+'" alt="Kart QR Kodu">'+
      '<div class="qrNote">Bu QR kod okutulduğunda bu dijital taraftar kartı açılır.</div>'+
    '</div>'+
-   '<a id="announcementsBtn" class="announcementsBtn" href="#duyurular">Duyurular<span id="announceDot" class="announceDot"></span></a>'+ 
+   '<a id="announcementsBtn" class="announcementsBtn" href="./duyurular.html?k='+encodeURIComponent(kod)+'">Duyurular<span id="announceDot" class="announceDot"></span></a>'+ 
      '<a class="partnerBtn" href="./isyerleri.html?k='+encodeURIComponent(kod)+'&v=37">Üye İşyerlerini Gör</a>'+
 
    '<div class="code">Kart Kodu: '+esc(kod)+'</div>';
- duyurulariYukle();
+ duyuruNoktasiGuncelle();
 })
 .catch(()=>hata("Kart bilgileri alınamadı."));
 }
