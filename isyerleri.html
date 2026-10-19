@@ -19,6 +19,14 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#07
 .empty{padding:28px 18px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:18px;text-align:center}
 .empty strong{display:block;font-size:18px;margin-bottom:8px;color:var(--navy)}
 .empty span{font-size:13px;color:var(--muted);line-height:1.5}
+.bizCard{padding:16px;border:1px solid #e5e7eb;border-radius:16px;background:#f8fafc;margin-bottom:12px}
+.bizTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.bizName{font-size:18px;font-weight:900;color:var(--navy)}
+.bizCat{font-size:11px;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:.5px}
+.bizDeal{display:inline-block;margin-top:10px;background:#fff3a8;color:#071d49;font-size:13px;font-weight:900;padding:8px 10px;border-radius:10px}
+.bizInfo{margin-top:10px;font-size:13px;line-height:1.5;color:#475569}
+.bizActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.bizBtn{display:inline-block;text-decoration:none;background:var(--navy);color:#fff;font-size:12px;font-weight:900;padding:9px 11px;border-radius:10px}
 .back{display:block;margin-top:18px;text-decoration:none;background:var(--navy);color:#fff;font-weight:900;text-align:center;padding:13px 16px;border-radius:14px}
 .footer{text-align:center;color:#dbe5f6;font-size:11px;margin-top:14px}
 </style>
@@ -33,9 +41,9 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#07
     <div class="band"></div>
     <div class="content">
       <div class="intro">Anlaşmalı üye işyerlerimizi ve üyelerimize özel avantajları burada görebilirsiniz.</div>
-      <div class="empty">
-        <strong>Üye işyeri listesi hazırlanıyor</strong>
-        <span>İlk anlaşmalı işyerleri eklendiğinde isim, avantaj ve konum bilgileri burada yer alacak.</span>
+      <div id="businessList" class="empty">
+        <strong>Üye işyerleri yükleniyor</strong>
+        <span>Lütfen bekleyin.</span>
       </div>
       <a class="back" id="backLink" href="./">Kartıma Dön</a>
     </div>
@@ -43,6 +51,34 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#07
   <div class="footer">Küçükkuyu Fenerbahçe Gönüllüleri</div>
 </div>
 <script>
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+fetch("./isyerleri.json?v="+Date.now(),{cache:"no-store"})
+.then(r=>r.ok?r.json():[])
+.then(list=>{
+  const el=document.getElementById("businessList");
+  const aktif=(Array.isArray(list)?list:[]).filter(x=>{
+    const v=String(x.aktif||x.aktifMi||"").trim().toLowerCase();
+    return ["evet","e","true","1","aktif"].includes(v);
+  }).sort((a,b)=>(Number(a.oncelik)||999)-(Number(b.oncelik)||999));
+  if(!aktif.length){
+    el.className="empty";
+    el.innerHTML='<strong>Henüz aktif üye işyeri yok</strong><span>Yeni anlaşmalı işletmeler eklendiğinde burada görünecek.</span>';
+    return;
+  }
+  el.className="";
+  el.innerHTML=aktif.map(x=>{
+    const tel=x.telefon?'<a class="bizBtn" href="tel:'+esc(String(x.telefon).replace(/\s+/g,""))+'">Ara</a>':"";
+    const harita=x.haritaLinki?'<a class="bizBtn" href="'+esc(x.haritaLinki)+'" target="_blank" rel="noopener">Haritada Gör</a>':"";
+    const not=x.not?'<div class="bizInfo">'+esc(x.not)+'</div>':"";
+    const adres=x.adres?'<div class="bizInfo">'+esc(x.adres)+'</div>':"";
+    return '<div class="bizCard"><div class="bizTop"><div><div class="bizName">'+esc(x.isyeriAdi||"İşyeri")+'</div><div class="bizCat">'+esc(x.kategori||"")+'</div></div></div><div class="bizDeal">'+esc(x.avantaj||"Üyelere özel avantaj")+'</div>'+adres+not+'<div class="bizActions">'+tel+harita+'</div></div>';
+  }).join("");
+}).catch(()=>{
+  const el=document.getElementById("businessList");
+  el.className="empty";
+  el.innerHTML='<strong>Liste yüklenemedi</strong><span>Lütfen daha sonra tekrar deneyin.</span>';
+});
+
 const params=new URLSearchParams(window.location.search);
 const backKod=params.get("k");
 const backLink=document.getElementById("backLink");
