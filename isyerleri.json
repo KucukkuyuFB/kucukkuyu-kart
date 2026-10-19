@@ -5,9 +5,20 @@
     "kategori": "Kafe",
     "avantaj": "Tüm ürünlerde %10 İndirim",
     "adres": "Küçükkuyu",
-    "telefon": "5226969",
+    "telefon": "905358290562",
     "haritaLinki": "",
     "not": "Dijital taraftar kartı ibrazında geçerlidir.",
     "oncelik": "1"
+  },
+  {
+    "aktif": "EVET",
+    "isyeriAdi": "KARDELEN",
+    "kategori": "Lokanta",
+    "avantaj": "Tüm ürünlerde %10 İndirim",
+    "adres": "Küçükkuyu",
+    "telefon": "5226969",
+    "haritaLinki": "",
+    "not": "Dijital taraftar kartı ibrazında geçerlidir.",
+    "oncelik": "2"
   }
 ]
