@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "aktif": "EVET",
+    "isyeriAdi": "NO11 COFFEE&BAKERY",
+    "kategori": "Kafe",
+    "avantaj": "Tüm ürünlerde %10 İndirim",
+    "adres": "Küçükkuyu",
+    "telefon": "5226969",
+    "haritaLinki": "",
+    "not": "Dijital taraftar kartı ibrazında geçerlidir.",
+    "oncelik": "1"
+  }
+]
