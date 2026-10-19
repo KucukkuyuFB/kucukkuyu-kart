@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Duyurular | Küçükkuyu Fenerbahçe Gönüllüleri</title>
+<style>
+:root{--navy:#071d49;--yellow:#ffd500}
+*{box-sizing:border-box}
+body{margin:0;background:#eef2f7;font-family:Arial,Helvetica,sans-serif;color:#0b1e3d}
+.wrap{max-width:680px;margin:0 auto;padding:22px 14px 40px}
+.top{background:var(--navy);color:#fff;border-radius:20px 20px 0 0;padding:24px 18px;text-align:center;border-bottom:6px solid var(--yellow)}
+.title{font-size:24px;font-weight:900}
+.sub{margin-top:4px;font-size:13px;opacity:.85;font-weight:700}
+.card{background:#fff;border-radius:0 0 20px 20px;padding:18px;box-shadow:0 10px 28px rgba(7,29,73,.12)}
+.ann{background:#f7f9fc;border:1px solid #e1e7ef;border-left:5px solid var(--yellow);border-radius:14px;padding:15px 16px;margin-bottom:12px}
+.ann h3{margin:0 0 7px;color:var(--navy);font-size:18px}
+.ann p{margin:0;line-height:1.55;font-size:14px;font-weight:600}
+.date{margin-top:10px;font-size:11px;color:#7b8494;font-weight:700}
+.btn{display:inline-block;margin-top:12px;text-decoration:none;background:var(--navy);color:#fff;padding:10px 13px;border-radius:10px;font-weight:900;font-size:12px}
+.empty{padding:28px 14px;text-align:center;color:#7b8494;font-weight:700}
+.back{display:block;margin-top:14px;text-decoration:none;background:var(--yellow);color:var(--navy);font-weight:900;text-align:center;padding:14px 16px;border-radius:14px;border:1px solid #e2bd00}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="title">Duyurular</div>
+    <div class="sub">Küçükkuyu Fenerbahçe Gönüllüleri</div>
+  </div>
+  <div class="card">
+    <div id="list" class="empty">Duyurular yükleniyor...</div>
+    <a id="back" class="back" href="./">Kartıma Dön</a>
+  </div>
+</div>
+<script>
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function parseTR(v){
+ if(!v)return null;
+ const p=String(v).trim().split(".");
+ if(p.length!==3)return null;
+ const d=new Date(Number(p[2]),Number(p[1])-1,Number(p[0]));
+ d.setHours(0,0,0,0);
+ return isNaN(d)?null:d;
+}
+const q=new URLSearchParams(location.search);
+const k=q.get("k");
+if(k) document.getElementById("back").href="./?k="+encodeURIComponent(k);
+fetch("./duyurular.json?v="+Date.now(),{cache:"no-store"})
+.then(r=>r.ok?r.json():[])
+.then(list=>{
+ const el=document.getElementById("list");
+ const bugun=new Date(); bugun.setHours(0,0,0,0);
+ const aktif=(Array.isArray(list)?list:[]).filter(x=>{
+   const yayin=String(x.yayinda||x.yayin||"").trim().toLowerCase();
+   if(!["evet","e","true","1","yayında","yayinda"].includes(yayin)) return false;
+   const bas=parseTR(x.baslangic||x.baslangicTarihi);
+   const bit=parseTR(x.bitis||x.bitisTarihi);
+   if(bas&&bugun<bas) return false;
+   if(bit&&bugun>bit) return false;
+   return true;
+ }).sort((a,b)=>(Number(a.oncelik)||999)-(Number(b.oncelik)||999));
+ if(!aktif.length){el.className="empty";el.textContent="Şu anda aktif duyuru bulunmuyor.";return;}
+ el.className="";
+ el.innerHTML=aktif.map(x=>{
+   const tarih=(x.baslangic||x.bitis)?'<div class="date">'+esc(x.baslangic||"")+(x.bitis?' - '+esc(x.bitis):'')+'</div>':"";
+   const btn=(x.link&&x.buton)?'<a class="btn" href="'+esc(x.link)+'" target="_blank" rel="noopener">'+esc(x.buton)+'</a>':"";
+   return '<div class="ann"><h3>'+esc(x.baslik||"Duyuru")+'</h3><p>'+esc(x.metin||"")+'</p>'+tarih+btn+'</div>';
+ }).join("");
+}).catch(()=>{
+ const el=document.getElementById("list");
+ el.className="empty";
+ el.textContent="Duyurular şu anda yüklenemedi.";
+});
+</script>
+</body>
+</html>
