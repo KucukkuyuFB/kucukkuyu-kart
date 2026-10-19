@@ -1,6 +1,6 @@
 [
   {
-    "aktif": "EVET",
+    "aktif": "HAYIR",
     "isyeriAdi": "NO11 COFFEE&BAKERY",
     "kategori": "Kafe",
     "avantaj": "Tüm ürünlerde %10 İndirim",
@@ -11,7 +11,7 @@
     "oncelik": "1"
   },
   {
-    "aktif": "EVET",
+    "aktif": "HAYIR",
     "isyeriAdi": "KARDELEN",
     "kategori": "Lokanta",
     "avantaj": "Tüm ürünlerde %10 İndirim",
