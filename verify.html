@@ -47,7 +47,8 @@ if(!kod){
   fetch("./members.json?ts="+Date.now(),{cache:"no-store"})
     .then(function(r){if(!r.ok) throw new Error("data"); return r.json();})
     .then(function(members){
-      const m=members[kod];
+      const liste=Array.isArray(members)?members:Object.values(members||{});
+      const m=liste.find(function(x){return String(x.kartKodu||"").trim()===String(kod||"").trim();});
       if(!m){hata("Üyelik doğrulanamadı.");return;}
       const aktif=String(m.durum||"").trim().toLowerCase()==="aktif";
       sonuc.className="content";
