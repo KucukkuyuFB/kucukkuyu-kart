@@ -8,5 +8,15 @@
     "buton": "ÜYE KARTLARI SON DURUM",
     "link": "",
     "oncelik": "1"
+  },
+  {
+    "yayinda": "#REF!",
+    "baslik": "#REF!",
+    "metin": "#REF!",
+    "baslangic": "#REF!",
+    "bitis": "#REF!",
+    "buton": "",
+    "link": "",
+    "oncelik": "#REF!"
   }
 ]
