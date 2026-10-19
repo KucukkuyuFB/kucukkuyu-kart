@@ -56,6 +56,9 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#06
 }
 
 .thanksSlim{margin-top:18px;padding:14px 16px;border-left:4px solid var(--yellow);background:#f7f9fc;border-radius:12px;color:var(--navy);font-size:13px;font-weight:800;line-height:1.55}
+.aidatAlert{margin-top:14px;padding:13px 15px;border-radius:12px;font-size:13px;font-weight:800;line-height:1.45}
+.aidatAlert.yellow{background:#fff7cf;border:1px solid #efd66a;color:#6d5600}
+.aidatAlert.red{background:#fff0f0;border:1px solid #e7a4a4;color:#9b1c1c}
 .grid{margin-top:24px;border:1px solid #e9edf3;border-radius:18px;overflow:hidden;background:#fff}
 .row{display:flex;justify-content:space-between;gap:16px;text-align:left;padding:15px 16px;border-bottom:1px solid #edf0f4}
 .row:last-child{border-bottom:0}
@@ -139,6 +142,34 @@ function uyelikMesaji(m){
  const sure=sureMetni(m.uyelikBaslangic);
  return sure ? sure+"dür ailemizle birlikte olduğun için teşekkürler!" : "Ailemize katıldığın için teşekkürler!";
 }
+function sonrakiAidatTarihi(sonOdeme){
+ const d=tarihTR(sonOdeme);
+ if(!d) return null;
+ const gun=d.getDate();
+ const sonraki=new Date(d.getFullYear(),d.getMonth()+1,1);
+ const sonGun=new Date(sonraki.getFullYear(),sonraki.getMonth()+1,0).getDate();
+ sonraki.setDate(Math.min(gun,sonGun));
+ sonraki.setHours(0,0,0,0);
+ return sonraki;
+}
+function tarihYaz(d){
+ return String(d.getDate()).padStart(2,"0")+"."+String(d.getMonth()+1).padStart(2,"0")+"."+d.getFullYear();
+}
+function aidatUyarisi(m){
+ const sonraki=sonrakiAidatTarihi(m.sonOdeme);
+ if(!sonraki) return "";
+ const bugun=new Date(); bugun.setHours(0,0,0,0);
+ const fark=Math.ceil((sonraki-bugun)/86400000);
+ if(fark<0){
+   const gecen=Math.abs(fark);
+   return '<div class="aidatAlert red">Aidat ödeme tarihi '+esc(tarihYaz(sonraki))+' tarihinde geçti. '+gecen+' gündür ödeme bekleniyor.</div>';
+ }
+ if(fark<=5){
+   const metin=fark===0 ? "bugün" : fark+" gün sonra";
+   return '<div class="aidatAlert yellow">Aidat ödeme tarihi '+esc(tarihYaz(sonraki))+'. Ödemeye '+metin+'.</div>';
+ }
+ return "";
+}
 if(kod){
   try{localStorage.setItem("lastCardUrl", window.location.href);}catch(e){}
 }
@@ -167,6 +198,7 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
    
    
    (aktif ? '<div class="thanksSlim">'+esc(uyelikMesaji(m))+'</div>' : '')+
+   (aktif ? aidatUyarisi(m) : '')+
    '<div class="grid">'+
      '<div class="row"><span class="label">Üyelik Durumu</span><span class="value">'+esc(m.durum)+'</span></div>'+
      '<div class="row"><span class="label">Üyelik Başlangıç Tarihi</span><span class="value">'+esc(m.uyelikBaslangic||"-")+'</span></div>'+
