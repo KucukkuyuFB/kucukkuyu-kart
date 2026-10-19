@@ -219,7 +219,8 @@ if(!kod){hata("Kart kodu bulunamadı.")}else{
 fetch("./members.json?v="+Date.now(),{cache:"no-store"})
 .then(r=>{if(!r.ok)throw new Error();return r.json()})
 .then(members=>{
- const m=members[kod];
+ const liste=Array.isArray(members)?members:Object.values(members||{});
+ const m=liste.find(function(x){return String(x.kartKodu||"").trim()===String(kod||"").trim();});
  if(!m){hata("Kart doğrulanamadı.<br><br>Geçersiz kart.");return}
  const aktif=String(m.durum||"").trim().toLowerCase()==="aktif";
  const kartLinki="https://kucukkuyufb.github.io/kucukkuyu-kart/?k="+encodeURIComponent(kod);
