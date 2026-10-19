@@ -145,10 +145,7 @@ function uyelikMesaji(m){
 function sonrakiAidatTarihi(sonOdeme){
  const d=tarihTR(sonOdeme);
  if(!d) return null;
- const gun=d.getDate();
- const sonraki=new Date(d.getFullYear(),d.getMonth()+1,1);
- const sonGun=new Date(sonraki.getFullYear(),sonraki.getMonth()+1,0).getDate();
- sonraki.setDate(Math.min(gun,sonGun));
+ const sonraki=new Date(d.getFullYear(),d.getMonth()+1,15);
  sonraki.setHours(0,0,0,0);
  return sonraki;
 }
@@ -202,7 +199,7 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
    '<div class="grid">'+
      '<div class="row"><span class="label">Üyelik Durumu</span><span class="value">'+esc(m.durum)+'</span></div>'+
      '<div class="row"><span class="label">Üyelik Başlangıç Tarihi</span><span class="value">'+esc(m.uyelikBaslangic||"-")+'</span></div>'+
-     '<div class="row"><span class="label">Aidat Ödeme Tarihi</span><span class="value">'+esc(m.sonOdeme||"-")+'</span></div>'+
+     '<div class="row"><span class="label">Aidat Ödeme Tarihi</span><span class="value">'+esc(sonrakiAidatTarihi(m.sonOdeme)?tarihYaz(sonrakiAidatTarihi(m.sonOdeme)):"-")+'</span></div>'+
      '<div class="row"><span class="label">Aidat Tutarı</span><span class="value">'+esc(m.aylikAidat)+' TL</span></div>'+
    '</div>'+
 
