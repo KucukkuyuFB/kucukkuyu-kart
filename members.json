@@ -1,82 +1,138 @@
-{
-  "KKT-10001-M4N8B": {
+[
+  {
+    "kartKodu": "KKT-10001-M4N8B",
     "uyeNo": "10001",
     "adSoyad": "Abdullah Önen",
-    "tip": "Kurucu Üye",
+    "telefon": "905433160849",
+    "uyelikTipi": "Kurucu Üye",
     "aylikAidat": "500",
     "sonOdeme": "01.10.2026",
+    "sonrakiOdeme": "01.11.2026",
     "durum": "Aktif",
+    "not": "Örnek kayıt",
+    "kartLinki": "https://kucukkuyufb.github.io/kucukkuyu-kart/?k=KKT-10001-M4N8B&v=41",
+    "qrKod": "",
+    "whatsappLinki": "https://wa.me/905433160849?text=Merhaba%20Abdullah%20%C3%96nen%2C%20K%C3%BC%C3%A7%C3%BCkkuyu%20Fenerbah%C3%A7e%20G%C3%B6n%C3%BCll%C3%BCleri%20Taraftar%20Kart%C4%B1n%C4%B1z%20haz%C4%B1r.%20Dijital%20%C3%BCyelik%20kart%C4%B1n%C4%B1z%C4%B1%20a%C5%9Fa%C4%9F%C4%B1daki%20ba%C4%9Flant%C4%B1dan%20a%C3%A7abilir%2C%20%C3%BCye%20i%C5%9Fyeri%20ba%C4%9Flant%C4%B1s%C4%B1ndan%20%C3%BCye%20i%C5%9Fyerlerimizde%20%C3%BCyelerimize%20%C3%B6zel%20indirimlere%20ula%C5%9Fabilirsin.%0Ahttps%3A%2F%2Fkucukkuyufb.github.io%2Fkucukkuyu-kart%2F%3Fk%3DKKT-10001-M4N8B%26v%3D41",
     "uyelikBaslangic": "01.09.2026",
-    "aktif": true
+    "dogumTarihi": ""
   },
-  "KKT-10002-X7P2Q": {
+  {
+    "kartKodu": "KKT-10002-X7P2Q",
     "uyeNo": "10002",
     "adSoyad": "C.Suha Sönmez",
-    "tip": "Kurucu Üye",
+    "telefon": "905358290562",
+    "uyelikTipi": "Kurucu Üye",
     "aylikAidat": "500",
     "sonOdeme": "01.10.2026",
+    "sonrakiOdeme": "01.11.2026",
     "durum": "Aktif",
+    "not": "Örnek kayıt",
+    "kartLinki": "https://kucukkuyufb.github.io/kucukkuyu-kart/?k=KKT-10002-X7P2Q&v=41",
+    "qrKod": "",
+    "whatsappLinki": "https://wa.me/905358290562?text=Merhaba%20C.Suha%20S%C3%B6nmez%2C%20K%C3%BC%C3%A7%C3%BCkkuyu%20Fenerbah%C3%A7e%20G%C3%B6n%C3%BCll%C3%BCleri%20Taraftar%20Kart%C4%B1n%C4%B1z%20haz%C4%B1r.%20Dijital%20%C3%BCyelik%20kart%C4%B1n%C4%B1z%C4%B1%20a%C5%9Fa%C4%9F%C4%B1daki%20ba%C4%9Flant%C4%B1dan%20a%C3%A7abilir%2C%20%C3%BCye%20i%C5%9Fyeri%20ba%C4%9Flant%C4%B1s%C4%B1ndan%20%C3%BCye%20i%C5%9Fyerlerimizde%20%C3%BCyelerimize%20%C3%B6zel%20indirimlere%20ula%C5%9Fabilirsin.%0Ahttps%3A%2F%2Fkucukkuyufb.github.io%2Fkucukkuyu-kart%2F%3Fk%3DKKT-10002-X7P2Q%26v%3D41",
     "uyelikBaslangic": "01.09.2026",
-    "aktif": true
+    "dogumTarihi": "20.10.1990"
   },
-  "KKT-10003-R9T3L": {
+  {
+    "kartKodu": "KKT-10003-R9T3L",
     "uyeNo": "10003",
     "adSoyad": "Hasan Özdemir",
-    "tip": "Kurucu Üye",
+    "telefon": "905439179738",
+    "uyelikTipi": "Kurucu Üye",
     "aylikAidat": "500",
     "sonOdeme": "01.10.2026",
+    "sonrakiOdeme": "01.11.2026",
     "durum": "Aktif",
+    "not": "Örnek kayıt",
+    "kartLinki": "https://kucukkuyufb.github.io/kucukkuyu-kart/?k=KKT-10003-R9T3L&v=41",
+    "qrKod": "",
+    "whatsappLinki": "https://wa.me/905439179738?text=Merhaba%20Hasan%20%C3%96zdemir%2C%20K%C3%BC%C3%A7%C3%BCkkuyu%20Fenerbah%C3%A7e%20G%C3%B6n%C3%BCll%C3%BCleri%20Taraftar%20Kart%C4%B1n%C4%B1z%20haz%C4%B1r.%20Dijital%20%C3%BCyelik%20kart%C4%B1n%C4%B1z%C4%B1%20a%C5%9Fa%C4%9F%C4%B1daki%20ba%C4%9Flant%C4%B1dan%20a%C3%A7abilir%2C%20%C3%BCye%20i%C5%9Fyeri%20ba%C4%9Flant%C4%B1s%C4%B1ndan%20%C3%BCye%20i%C5%9Fyerlerimizde%20%C3%BCyelerimize%20%C3%B6zel%20indirimlere%20ula%C5%9Fabilirsin.%0Ahttps%3A%2F%2Fkucukkuyufb.github.io%2Fkucukkuyu-kart%2F%3Fk%3DKKT-10003-R9T3L%26v%3D41",
     "uyelikBaslangic": "01.09.2026",
-    "aktif": true
+    "dogumTarihi": ""
   },
-  "KKT-10004-V6C1Z": {
+  {
+    "kartKodu": "KKT-10004-V6C1Z",
     "uyeNo": "10004",
     "adSoyad": "Erdal Aydın Bayar",
-    "tip": "Kurucu Üye",
+    "telefon": "905458335369",
+    "uyelikTipi": "Kurucu Üye",
     "aylikAidat": "500",
     "sonOdeme": "01.10.2026",
+    "sonrakiOdeme": "01.11.2026",
     "durum": "Aktif",
+    "not": "Örnek kayıt",
+    "kartLinki": "https://kucukkuyufb.github.io/kucukkuyu-kart/?k=KKT-10004-V6C1Z&v=41",
+    "qrKod": "",
+    "whatsappLinki": "https://wa.me/905458335369?text=Merhaba%20Erdal%20Ayd%C4%B1n%20Bayar%2C%20K%C3%BC%C3%A7%C3%BCkkuyu%20Fenerbah%C3%A7e%20G%C3%B6n%C3%BCll%C3%BCleri%20Taraftar%20Kart%C4%B1n%C4%B1z%20haz%C4%B1r.%20Dijital%20%C3%BCyelik%20kart%C4%B1n%C4%B1z%C4%B1%20a%C5%9Fa%C4%9F%C4%B1daki%20ba%C4%9Flant%C4%B1dan%20a%C3%A7abilir%2C%20%C3%BCye%20i%C5%9Fyeri%20ba%C4%9Flant%C4%B1s%C4%B1ndan%20%C3%BCye%20i%C5%9Fyerlerimizde%20%C3%BCyelerimize%20%C3%B6zel%20indirimlere%20ula%C5%9Fabilirsin.%0Ahttps%3A%2F%2Fkucukkuyufb.github.io%2Fkucukkuyu-kart%2F%3Fk%3DKKT-10004-V6C1Z%26v%3D41",
     "uyelikBaslangic": "01.09.2026",
-    "aktif": true
+    "dogumTarihi": ""
   },
-  "KKT-10005-H2K7S": {
+  {
+    "kartKodu": "KKT-10005-H2K7S",
     "uyeNo": "10005",
     "adSoyad": "Onur Demirkoparan",
-    "tip": "Kurucu Üye",
+    "telefon": "905449075434",
+    "uyelikTipi": "Kurucu Üye",
     "aylikAidat": "500",
     "sonOdeme": "01.10.2026",
+    "sonrakiOdeme": "01.11.2026",
     "durum": "Aktif",
+    "not": "Örnek kayıt",
+    "kartLinki": "https://kucukkuyufb.github.io/kucukkuyu-kart/?k=KKT-10005-H2K7S&v=41",
+    "qrKod": "",
+    "whatsappLinki": "https://wa.me/905449075434?text=Merhaba%20Onur%20Demirkoparan%2C%20K%C3%BC%C3%A7%C3%BCkkuyu%20Fenerbah%C3%A7e%20G%C3%B6n%C3%BCll%C3%BCleri%20Taraftar%20Kart%C4%B1n%C4%B1z%20haz%C4%B1r.%20Dijital%20%C3%BCyelik%20kart%C4%B1n%C4%B1z%C4%B1%20a%C5%9Fa%C4%9F%C4%B1daki%20ba%C4%9Flant%C4%B1dan%20a%C3%A7abilir%2C%20%C3%BCye%20i%C5%9Fyeri%20ba%C4%9Flant%C4%B1s%C4%B1ndan%20%C3%BCye%20i%C5%9Fyerlerimizde%20%C3%BCyelerimize%20%C3%B6zel%20indirimlere%20ula%C5%9Fabilirsin.%0Ahttps%3A%2F%2Fkucukkuyufb.github.io%2Fkucukkuyu-kart%2F%3Fk%3DKKT-10005-H2K7S%26v%3D41",
     "uyelikBaslangic": "01.09.2026",
-    "aktif": true
+    "dogumTarihi": ""
   },
-  "KKT-20001-YEVML": {
+  {
+    "kartKodu": "KKT-20001-YEVML",
     "uyeNo": "20001",
     "adSoyad": "Tuncay Özer",
-    "tip": "Üye",
+    "telefon": "905550357084",
+    "uyelikTipi": "Üye",
     "aylikAidat": "300",
     "sonOdeme": "01.10.2026",
+    "sonrakiOdeme": "01.11.2026",
     "durum": "Aktif",
+    "not": "Örnek kayıt",
+    "kartLinki": "https://kucukkuyufb.github.io/kucukkuyu-kart/?k=KKT-20001-YEVML&v=41",
+    "qrKod": "",
+    "whatsappLinki": "https://wa.me/905550357084?text=Merhaba%20Tuncay%20%C3%96zer%2C%20K%C3%BC%C3%A7%C3%BCkkuyu%20Fenerbah%C3%A7e%20G%C3%B6n%C3%BCll%C3%BCleri%20Taraftar%20Kart%C4%B1n%C4%B1z%20haz%C4%B1r.%20Dijital%20%C3%BCyelik%20kart%C4%B1n%C4%B1z%C4%B1%20a%C5%9Fa%C4%9F%C4%B1daki%20ba%C4%9Flant%C4%B1dan%20a%C3%A7abilir%2C%20%C3%BCye%20i%C5%9Fyeri%20ba%C4%9Flant%C4%B1s%C4%B1ndan%20%C3%BCye%20i%C5%9Fyerlerimizde%20%C3%BCyelerimize%20%C3%B6zel%20indirimlere%20ula%C5%9Fabilirsin.%0Ahttps%3A%2F%2Fkucukkuyufb.github.io%2Fkucukkuyu-kart%2F%3Fk%3DKKT-20001-YEVML%26v%3D41",
     "uyelikBaslangic": "01.10.2026",
-    "aktif": true
+    "dogumTarihi": ""
   },
-  "KKT-10006-QGD2C": {
+  {
+    "kartKodu": "KKT-10006-QGD2C",
     "uyeNo": "10006",
     "adSoyad": "İbrahim Tarihçi",
-    "tip": "Kurucu Üye",
+    "telefon": "",
+    "uyelikTipi": "Kurucu Üye",
     "aylikAidat": "500",
     "sonOdeme": "01.10.2026",
+    "sonrakiOdeme": "01.11.2027",
     "durum": "Aktif",
+    "not": "Örnek kayıt",
+    "kartLinki": "https://kucukkuyufb.github.io/kucukkuyu-kart/?k=KKT-10006-QGD2C&v=41",
+    "qrKod": "",
+    "whatsappLinki": "",
     "uyelikBaslangic": "",
-    "aktif": true
+    "dogumTarihi": ""
   },
-  "KKT-10007-LLUJ7": {
+  {
+    "kartKodu": "KKT-10007-LLUJ7",
     "uyeNo": "10007",
     "adSoyad": "Mehmet Öğütçü",
-    "tip": "Kurucu Üye",
+    "telefon": "",
+    "uyelikTipi": "Kurucu Üye",
     "aylikAidat": "500",
     "sonOdeme": "01.10.2026",
+    "sonrakiOdeme": "01.11.2028",
     "durum": "Aktif",
+    "not": "Örnek kayıt",
+    "kartLinki": "https://kucukkuyufb.github.io/kucukkuyu-kart/?k=KKT-10007-LLUJ7&v=41",
+    "qrKod": "",
+    "whatsappLinki": "",
     "uyelikBaslangic": "",
-    "aktif": true
+    "dogumTarihi": ""
   }
-}
+]
