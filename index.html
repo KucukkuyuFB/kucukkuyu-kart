@@ -149,7 +149,7 @@ function sureMetni(baslangic){
  return p.join(" ");
 }
 function uyelikMesaji(m){
- const tip=String(m.tip||"").trim().toLowerCase();
+ const tip=String(m.uyelikTipi||m.tip||"").trim().toLowerCase();
  if(tip.includes("kurucu")) return "Kuruluşumuzda verdiğin destek ve ilk günden beri ailemizle olduğun için teşekkürler!";
  const sure=sureMetni(m.uyelikBaslangic);
  return sure ? sure+"dür ailemizle birlikte olduğun için teşekkürler!" : "Ailemize katıldığın için teşekkürler!";
