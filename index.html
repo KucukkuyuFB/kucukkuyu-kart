@@ -229,7 +229,7 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
  document.getElementById("kart").innerHTML=
    '<div class="topHeader">'+
      '<div class="topLeft">'+
-       '<div class="memberTypeBadge">'+esc(m.tip)+'</div>'+
+       '<div class="memberTypeBadge">'+esc(m.uyelikTipi||m.tip||"")+'</div>'+
        '<div class="memberName">'+esc(m.adSoyad)+'</div>'+
      '</div>'+
      '<div class="topRight">'+
@@ -250,7 +250,7 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
    '<div class="qrBox">'+
      '<div class="qrTitle">Kart QR Kodu</div>'+
      '<img class="qrImage" src="'+qrLinki+'" alt="Kart QR Kodu">'+
-     '<div class="qrNote">Bu QR kod okutulduğunda bu dijital taraftar kartı açılır.</div>'+
+     '<div class="qrNote">Bu QR kod okutulduğunda üyelik doğrulama sayfası açılır.</div>'+
    '</div>'+
    '<a id="announcementsBtn" class="announcementsBtn" href="./duyurular.html?k='+encodeURIComponent(kod)+'">Duyurular<span id="announceDot" class="announceDot"></span></a>'+ 
      '<a class="partnerBtn" href="./isyerleri.html?k='+encodeURIComponent(kod)+'&v=37">Üye İşyerlerini Gör</a>'+
