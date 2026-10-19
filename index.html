@@ -142,28 +142,34 @@ function uyelikMesaji(m){
  const sure=sureMetni(m.uyelikBaslangic);
  return sure ? sure+"dür ailemizle birlikte olduğun için teşekkürler!" : "Ailemize katıldığın için teşekkürler!";
 }
-function sonrakiAidatTarihi(sonOdeme){
+function aidatDonemi(sonOdeme){
  const d=tarihTR(sonOdeme);
  if(!d) return null;
- const sonraki=new Date(d.getFullYear(),d.getMonth()+1,15);
- sonraki.setHours(0,0,0,0);
- return sonraki;
+ const baslangic=new Date(d.getFullYear(),d.getMonth()+1,1);
+ const son=new Date(d.getFullYear(),d.getMonth()+1,15);
+ baslangic.setHours(0,0,0,0);
+ son.setHours(0,0,0,0);
+ return {baslangic:baslangic,son:son};
 }
 function tarihYaz(d){
  return String(d.getDate()).padStart(2,"0")+"."+String(d.getMonth()+1).padStart(2,"0")+"."+d.getFullYear();
 }
 function aidatUyarisi(m){
- const sonraki=sonrakiAidatTarihi(m.sonOdeme);
- if(!sonraki) return "";
+ const donem=aidatDonemi(m.sonOdeme);
+ if(!donem) return "";
  const bugun=new Date(); bugun.setHours(0,0,0,0);
- const fark=Math.ceil((sonraki-bugun)/86400000);
- if(fark<0){
-   const gecen=Math.abs(fark);
-   return '<div class="aidatAlert red">Aidat ödeme tarihi '+esc(tarihYaz(sonraki))+' tarihinde geçti. '+gecen+' gündür ödeme bekleniyor.</div>';
+
+ if(bugun>donem.son){
+   const gecen=Math.floor((bugun-donem.son)/86400000);
+   return '<div class="aidatAlert red">Aidat ödeme süresi '+esc(tarihYaz(donem.son))+' tarihinde sona erdi. '+gecen+' gündür gecikmede.</div>';
  }
- if(fark<=5){
-   const metin=fark===0 ? "bugün" : fark+" gün sonra";
-   return '<div class="aidatAlert yellow">Aidat ödeme tarihi '+esc(tarihYaz(sonraki))+'. Ödemeye '+metin+'.</div>';
+
+ if(bugun>=donem.baslangic){
+   const kalan=Math.ceil((donem.son-bugun)/86400000);
+   if(kalan<=5){
+     const metin=kalan===0 ? "bugün son gün" : "son "+kalan+" gün";
+     return '<div class="aidatAlert yellow">Aidat ödeme dönemi açık. Son ödeme tarihi '+esc(tarihYaz(donem.son))+' — '+metin+'.</div>';
+   }
  }
  return "";
 }
@@ -199,7 +205,7 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
    '<div class="grid">'+
      '<div class="row"><span class="label">Üyelik Durumu</span><span class="value">'+esc(m.durum)+'</span></div>'+
      '<div class="row"><span class="label">Üyelik Başlangıç Tarihi</span><span class="value">'+esc(m.uyelikBaslangic||"-")+'</span></div>'+
-     '<div class="row"><span class="label">Aidat Ödeme Tarihi</span><span class="value">'+esc(sonrakiAidatTarihi(m.sonOdeme)?tarihYaz(sonrakiAidatTarihi(m.sonOdeme)):"-")+'</span></div>'+
+     '<div class="row"><span class="label">Aidat Ödeme Tarihi</span><span class="value">'+(aidatDonemi(m.sonOdeme)?("01–15."+String(aidatDonemi(m.sonOdeme).son.getMonth()+1).padStart(2,"0")+"."+aidatDonemi(m.sonOdeme).son.getFullYear()):"-")+'</span></div>'+
      '<div class="row"><span class="label">Aidat Tutarı</span><span class="value">'+esc(m.aylikAidat)+' TL</span></div>'+
    '</div>'+
 
