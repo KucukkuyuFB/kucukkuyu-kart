@@ -89,6 +89,10 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#06
 .verifyText strong{color:#071d49}
 .verifyNote{margin-top:16px;font-size:11px;color:#7b8494;font-weight:700;line-height:1.5}
 .partnerBtn{display:block;margin-top:18px;text-decoration:none;background:#ffd500;color:#071d49;font-weight:900;text-align:center;padding:14px 16px;border-radius:14px;border:1px solid #e2bd00;box-shadow:0 6px 16px rgba(7,29,73,.12)}
+.announcementsBtn{position:relative;display:block;margin-top:12px;text-decoration:none;background:#071d49;color:#fff;font-weight:900;text-align:center;padding:14px 16px;border-radius:14px;box-shadow:0 6px 16px rgba(7,29,73,.16)}
+.announceDot{position:absolute;top:-5px;right:-5px;width:13px;height:13px;border-radius:50%;background:#e00000;border:3px solid #fff;box-shadow:0 0 0 2px rgba(224,0,0,.18);display:none}
+.announceDot.active{display:block;animation:announceBlink 1s infinite}
+@keyframes announceBlink{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.35);opacity:.45}}
 .installBtn{display:block;width:100%;margin-top:12px;border:0;background:#071d49;color:#fff;font:inherit;font-weight:900;text-align:center;padding:14px 16px;border-radius:14px;cursor:pointer;box-shadow:0 6px 16px rgba(7,29,73,.16);text-decoration:none}
 .installBtn[hidden]{display:none}.installBtn:disabled{opacity:.55;cursor:default}
 .installHelp{display:none;margin-top:12px;padding:13px 14px;border-radius:12px;background:#f7f9fc;border:1px solid #e2e8f0;color:#334155;font-size:12px;line-height:1.5}
@@ -187,12 +191,14 @@ function duyurulariYukle(){
      if(bit&&bugun>bit) return false;
      return true;
    }).sort((a,b)=>(Number(a.oncelik)||999)-(Number(b.oncelik)||999));
-   if(!aktif.length){alan.innerHTML="";return;}
+   const dot=document.getElementById("announceDot");
+   if(dot) dot.classList.toggle("active",aktif.length>0);
+   if(!aktif.length){alan.innerHTML='<div class="annTitle">Duyurular</div><div class="annCard"><div class="annText">Şu anda aktif duyuru bulunmuyor.</div></div>';return;}
    alan.innerHTML='<div class="annTitle">Duyurular</div>'+aktif.map(x=>{
      const btn=(x.link&&x.buton)?'<a class="annBtn" href="'+esc(x.link)+'" target="_blank" rel="noopener">'+esc(x.buton)+'</a>':"";
      return '<div class="annCard"><div class="annHead">'+esc(x.baslik||"Duyuru")+'</div><div class="annText">'+esc(x.metin||"")+'</div>'+btn+'</div>';
    }).join("");
- }).catch(()=>{alan.innerHTML="";});
+ }).catch(()=>{const dot=document.getElementById("announceDot");if(dot)dot.classList.remove("active");alan.innerHTML='<div class="annTitle">Duyurular</div><div class="annCard"><div class="annText">Duyurular şu anda yüklenemedi.</div></div>';});
 }
 function aidatUyarisi(m){
  const donem=aidatDonemi(m.sonOdeme);
@@ -255,7 +261,8 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
      '<img class="qrImage" src="'+qrLinki+'" alt="Kart QR Kodu">'+
      '<div class="qrNote">Bu QR kod okutulduğunda bu dijital taraftar kartı açılır.</div>'+
    '</div>'+
-   '<a class="partnerBtn" href="./isyerleri.html?k='+encodeURIComponent(kod)+'&v=37">Üye İşyerlerini Gör</a>'+
+   '<a id="announcementsBtn" class="announcementsBtn" href="#duyurular">Duyurular<span id="announceDot" class="announceDot"></span></a>'+ 
+     '<a class="partnerBtn" href="./isyerleri.html?k='+encodeURIComponent(kod)+'&v=37">Üye İşyerlerini Gör</a>'+
 
    '<div class="code">Kart Kodu: '+esc(kod)+'</div>';
  duyurulariYukle();
