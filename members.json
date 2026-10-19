@@ -58,5 +58,25 @@
     "durum": "Aktif",
     "uyelikBaslangic": "01.10.2026",
     "aktif": true
+  },
+  "KKT-10006-QGD2C": {
+    "uyeNo": "10006",
+    "adSoyad": "İbrahim Tarihçi",
+    "tip": "Kurucu Üye",
+    "aylikAidat": "500",
+    "sonOdeme": "01.10.2026",
+    "durum": "Aktif",
+    "uyelikBaslangic": "",
+    "aktif": true
+  },
+  "KKT-10007-LLUJ7": {
+    "uyeNo": "10007",
+    "adSoyad": "Mehmet Öğütçü",
+    "tip": "Kurucu Üye",
+    "aylikAidat": "500",
+    "sonOdeme": "01.10.2026",
+    "durum": "Aktif",
+    "uyelikBaslangic": "",
+    "aktif": true
   }
 }
