@@ -63,6 +63,7 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#06
 .row{display:flex;justify-content:space-between;gap:16px;text-align:left;padding:15px 16px;border-bottom:1px solid #edf0f4}
 .row:last-child{border-bottom:0}
 .label{font-size:12px;color:#7b8494;font-weight:800;text-transform:uppercase;letter-spacing:.5px}
+.labelNote{display:block;margin-top:5px;font-size:10px;line-height:1.35;font-weight:600;text-transform:none;letter-spacing:0;color:#9aa2af;max-width:210px}
 .value{font-size:16px;color:#111f3a;font-weight:800;text-align:right}
 .qrBox{margin-top:20px;background:#fff;border:1px solid #e9edf3;border-radius:18px;padding:16px;text-align:center}
 .qrTitle{font-size:12px;color:#7b8494;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
@@ -205,7 +206,7 @@ fetch("./members.json?v="+Date.now(),{cache:"no-store"})
    '<div class="grid">'+
      '<div class="row"><span class="label">Üyelik Durumu</span><span class="value">'+esc(m.durum)+'</span></div>'+
      '<div class="row"><span class="label">Üyelik Başlangıç Tarihi</span><span class="value">'+esc(m.uyelikBaslangic||"-")+'</span></div>'+
-     '<div class="row"><span class="label">Aidat Ödeme Tarihi</span><span class="value">'+(aidatDonemi(m.sonOdeme)?("01–15."+String(aidatDonemi(m.sonOdeme).son.getMonth()+1).padStart(2,"0")+"."+aidatDonemi(m.sonOdeme).son.getFullYear()):"-")+'</span></div>'+
+     '<div class="row"><span class="label">Aidat Son Ödeme Tarihi<span class="labelNote">Üye aidatları her ayın en geç 15\'ine kadar ödenmelidir!</span></span><span class="value">'+(aidatDonemi(m.sonOdeme)?tarihYaz(aidatDonemi(m.sonOdeme).son):"-")+'</span></div>'+
      '<div class="row"><span class="label">Aidat Tutarı</span><span class="value">'+esc(m.aylikAidat)+' TL</span></div>'+
    '</div>'+
 
