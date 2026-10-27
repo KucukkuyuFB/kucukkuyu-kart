@@ -122,7 +122,7 @@
     "kartKodu": "KKT-10007-LLUJ7",
     "uyeNo": "10007",
     "adSoyad": "Mehmet Öğütçü",
-    "telefon": "",
+    "telefon": "905344218401",
     "uyelikTipi": "Kurucu Üye",
     "aylikAidat": "500",
     "sonOdeme": "01.10.2026",
@@ -131,7 +131,7 @@
     "not": "Örnek kayıt",
     "kartLinki": "https://kucukkuyufb.github.io/kucukkuyu-kart/?k=KKT-10007-LLUJ7&v=20261019-2",
     "qrKod": "",
-    "whatsappLinki": "",
+    "whatsappLinki": "https://wa.me/905344218401?text=Merhaba%20Mehmet%20%C3%96%C4%9F%C3%BCt%C3%A7%C3%BC%2C%20K%C3%BC%C3%A7%C3%BCkkuyu%20Fenerbah%C3%A7e%20G%C3%B6n%C3%BCll%C3%BCleri%20Taraftar%20Kart%C4%B1n%C4%B1z%20haz%C4%B1r.%20Dijital%20%C3%BCyelik%20kart%C4%B1n%C4%B1z%C4%B1%20a%C5%9Fa%C4%9F%C4%B1daki%20ba%C4%9Flant%C4%B1dan%20a%C3%A7abilir%2C%20%C3%BCye%20i%C5%9Fyeri%20ba%C4%9Flant%C4%B1s%C4%B1ndan%20%C3%BCye%20i%C5%9Fyerlerimizde%20%C3%BCyelerimize%20%C3%B6zel%20indirimlere%20ula%C5%9Fabilirsin.%0Ahttps%3A%2F%2Fkucukkuyufb.github.io%2Fkucukkuyu-kart%2F%3Fk%3DKKT-10007-LLUJ7%26v%3D20261019-2",
     "uyelikBaslangic": "",
     "dogumTarihi": ""
   },
@@ -151,5 +151,22 @@
     "whatsappLinki": "WhatsApp Gönder",
     "uyelikBaslangic": "01.09.2026",
     "dogumTarihi": "24.02.2006"
+  },
+  {
+    "kartKodu": "KKT-10009-QYBNG",
+    "uyeNo": "10009",
+    "adSoyad": "Tolga Karanlık",
+    "telefon": "5522630132",
+    "uyelikTipi": "Kurucu Üye",
+    "aylikAidat": "500",
+    "sonOdeme": "01.10.2026",
+    "sonrakiOdeme": "",
+    "durum": "Aktif",
+    "not": "",
+    "kartLinki": "https://kucukkuyufb.github.io/kucukkuyu-kart/?k=KKT-10009-QYBNG&v=41",
+    "qrKod": "",
+    "whatsappLinki": "WhatsApp Gönder",
+    "uyelikBaslangic": "01.09.2026",
+    "dogumTarihi": "01.01.1978"
   }
 ]
